@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>The Real, First Blog - a1a.ca</title>
+<meta charset="UTF-8">
+<meta name="description" content="a1a.ca - Blog description goes here.">
+<meta name="keywords" content="a1a, A1A, Scopazzi">
+<meta name="author" content="Giancarlo Scopazzi">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../images/favicon.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="title">
+<h1><a class="webtitle" href="../blog.html">blog <span style="color: rgb(255, 170, 0);">#</span></a></h1>
+</div>
+</div>
+<div class="buttons">
+  <button class="links" onclick="location.href='../index.html'">home</button>
+  <button class="links" onclick="location.href='../blog.html'">go back</button>
+  <button class="links" id="themeToggle">dark mode</button>
+</div>
+<div class="main">
+<div class="stuff">
+<h1 style="margin-top: 5px;">Title</h1>
+<p style="margin-left: 10px;"><b>Date</b></p>
+
+<!--Put stuff here-->
+
+</div>
+</div>
+</div>
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>

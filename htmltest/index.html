@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>a1a.ca</title>
+<meta charset="UTF-8">
+<meta name="description" content="Welcome to a1a.ca. My name is Giancarlo, and this is my personal website. You can view my blogs by clicking the blog button.">
+<meta name="keywords" content="a1a, A1A, Scopazzi">
+<meta name="author" content="Giancarlo Scopazzi">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="images/favicon.png" type="image/png">
+</head>
+<body>
+<div class="title">
+<h1><span class="titlecolour">a1a</span>.ca</h1>
+</div>
+<div class="buttons">
+<!--Buttons go here-->
+<button class="links" onclick="location.href='blog.html'">blog</button>
+<button class="links" onclick="location.href=''">archive</button>
+<button class="links" onclick="location.href=''">other stuff</button>
+<button class="links" id="themeToggle">light mode</button>
+</div>
+<div class="container">
+<div class="main">
+<div class="latest">
+<!--Latest blog goes here-->
+<div class="latest-text">
+<h1><a href="blogs/blog3.html">Welcome</a></h1>
+<p><b>Jun/26/2026</b></p>
+<div class="text-sample">
+<p>The site is now up, finally.<br>
+I've been working on this on and off for almost three years, I even wrote a <a href="blog2.html">blog on New Year's Eve</a> back in <b>2024</b> (It's also the homepage of the site) thinking I was gonna get the website released in early <b>2025</b> (I was wrong). Literally today<span style="color: grey;">...</span> <a style="font-size: 10pt; text-decoration: none;" href="blogs/blog3.html"><b>(read more)</b></a>
+</p>
+</div>
+</div>
+</div>
+<div class="stuff">
+<!--Put stuff here-->
+<p>Welcome to <b>a1a.ca</b></p>
+<p>My name is Giancarlo, and this is my personal website. You can view my blogs by clicking the blog button, the <b>archive</b> and <b>other stuff</b> buttons don't currently work, because my primary focus was on the blogs page.
+</p> 
+<p>
+I will release a new blog once a week, right now, theres <b>three</b> blogs you can currently read. If I'm feeling motivated, maybe I'll release <b>two</b> blogs in a week.
+</p>
+I plan on making the <b>archive</b> page like an archive of the old homepages, as I have made three different homepages while I was developing the site.
+</p>
+<img style="border: solid 4px white; width: 400px; height: auto; margin-right: 10px;" src="images/indeximg1.png" alt="The first homepage I made in late 2023.">
+<img style="border: solid 4px white; width: 400px; height: auto;" src="images/indeximg2.png" alt="The second homepage I made on December 31, 2024.">
+<p>
+I made the homepage on the <b>left</b> in mid-late 2023. I made the homepage on the <b>right</b> on New Year's Eve in 2024.
+</p>
+
+<p>
+I've never been too sure what to make the <b>other stuff</b> page, I've always wanted to make a never ending comment section, or something similar to the <a href="https://milliondollarhomepage.com" target="_blank">Million Dollar Homepage</a>, but I'd rather do the never ending comment section.
+</p>
+<p>Anyways, I hope you enjoy visiting the site. I will add more things soon, so <b>stay tuned</b>. 
+</div>
+</div>
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
