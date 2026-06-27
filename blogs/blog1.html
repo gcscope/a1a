@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>Welcome - a1a.ca</title>
+<meta charset="UTF-8">
+<meta name="description" content="a1a.ca - Blog talking about the development of the website.">
+<meta name="keywords" content="a1a, A1A, Scopazzi">
+<meta name="author" content="Giancarlo Scopazzi">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="images/favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="title">
+<h1><a class="webtitle" href="../blog.html">blog <span style="color: rgb(255, 170, 0);">1</span></a></h1>
+</div>
+</div>
+<div class="buttons">
+  <button class="links" onclick="location.href='../index.html'">home</button>
+  <button class="links" onclick="location.href='../blog.html'">go back</button>
+  <button class="links" id="themeToggle">dark mode</button>
+</div>
+<div class="main">
+<div class="stuff">
+<h1 style="margin-top: 5px;">Welcome</h1>
+<p style="margin-left: 10px;"><b>06/26/2026</b></p>
+<p>The site is now up, finally.</p>
+<p>
+I've been working on this on and off for almost three years, I even wrote a <a href="blogold.html">blog on New Year's Eve</a> back in <b>2024</b> (It's also the homepage of the site) thinking I was gonna get the website released in early <b>2025</b> (I was wrong). Literally today I looked up how to release a website on GitHub and how to link a web domain to a git page, so I figured I would crank out 2 blogs and finalize some things, then finally release the site.
+</p>
+<p>Yesterday I setup a <b>localhost</b> server using <b>Python</b> on my Mac (connected to the folder where I have my site) and I saw what my site looked like on mobile, so (using Claude) I made some changes. I made the title become smaller when it's viewed on mobile, I changed the font order (aparrently iPhones don't have <b>Tahoma</b> installed, so I added <b>Verdana</b> and <b>sans-serif</b> to the "font order") and (using Claude) I changed the style of the buttons so that it looks the same across all web browsers, because the buttons look different on Safari for some reason.
+</p>
+<p>
+The last few days, I've been using <b>Claude</b> (<a href="blog2.html">Click here</a> for the <b>blog</b>), and it's helped a ton. It helped me optimize a1a for mobile, and more importantly, helped me add a <b>dark mode</b> button (Which makes the site look 10x better in my opinion).
+But jut because i used it to add a few things to this site doesn't mean I'm gonna let Claude take this site over, the whole reason I made this three years ago was that I wanted to make an HTML site form scratch, using only TextEdit, three years later I've <b>mostly</b> kept my promise. I'd say this site is about 85% made by me, and 15% made by Claude. The dark mode and CSS optimization are the only things I've used Claude for.
+</p>
+<p>
+Another big reason I wanted to make a site is that I can post, virtually, <b>anything I want</b>. Obviously I'm not gonna post porn or anything (Idk how you can manage that on a blog website) but I can say whatever's on my mind. Something I can't do on instagrm. Sure instagram has terms and conditions, but I couldn't post what was on my mind because of <b>another thing</b>. When I was posting art on my old instagram account, I was being "stalked" by mom and my aunt. On evey post you would see comments from them. It got to a point where once I made a reel of an animated version of me reacting to a guy saying "1 in 3 people are short" and I said "I'm gonna go cry now-" at the end. It was just a video saying I was short (This was before puberty back when i was like 12), and it was supposed to be a funny video. But of course they posted comments saying "You're not short" and "dynamite comes in small packages". At the time it was pretty annoying, because they missed the point of the joke.
+</p>
+<p>
+Another example was a little while later, I wasn't posting as much on that art account (I was posting like once every few months). So I made a post saying that I was "retiting" from Instagram (basically saying I was still gonna be active, but I wasn't gonna post anymore). And I remember a few hours later my mom (and my aunt on the phone) were telling me to take that post down. I ended up archiving the retirement post, and two years later, I've only posted twice since then.
+</p>
+<p>
+I'm only bringing that up because last night I was brainstorming what to write on my first official blog, and those examples came to my mind because, if I'm gonna be writing blogs that are more <b>personal</b>, I'm not gonna let them find out about this website, because if they do, They're gonna be <b>stalking</b> my site, and if they see a blog they don't like, I'm gonna have to deal with the instagram situation all over again. But I'm not gonna delete a blog just because someone doesn't like it, because this is my website and I don't really care anymore.
+</p>
+<p>Anyways, I'm gonna try to drop a new blog once a week. That's a pretty good release window so that I don't eventually lose motivation (I've been writing this blog for over <b>30 minutes</b>). And maybe sometimes I'll release <b>two</b> blogs per week. Right now there's <b>three</b> blogs you can view right now: <a href="blogold.html">A blog from 2024</a>, <b>this blog</b>, and <a href="blog2.html">the Claude blog</a>. This blog doesn't have images, but other ones will. I hope to eventually add more to this site, but for now its just a personal website.
+</p>
+<p align="center" style="font-size: 11pt;"><b>THANK YOU FOR READING</p>
+</div>
+</div>
+</div>
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
