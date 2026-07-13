@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>How To HTML</title>
+<meta name="description" content="Giancarlo Scopazzi">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" src="coolimages/Favicon.png">
+</head>
+<body>
+<h1>HOW TO HTML</h1>
+<p><b>On this webpage I am going to tell (or type) you the basics of HTML. I'm not the best but I do know the basics. </b></p>
+<hr>
+<div class="htmlhistory">
+<h1>WHAT IS HTML?</h1>
+<p><b>Hypertext Markup Language</b> is the standard markup language designed to be viewed on a browser. It was made in 1990 by <b>Tim Berners-Lee</b> and was released to the public in 1993.</p>
+<p><b>Tim Berners-Lee</b> is the man responisble for the first website, (click <a href="https://info.cern.ch" title="The First Website" target="_blank">here</a> to visit it) The first image on the web, and he's also the reason HTML exists!</p>
+<p>Anyways, I'm pretty sure you clicked on this to learn HTML (unless you already know it.) So I'll get started.</p>
+</div>
+<hr>
+<div class="htmltags">
+<h1>HOW TO HTML</h1>
+<dd>These are HTML tags. You can find which one you need by finding the subcategory the tag is in.</dd>
+<h3>TEXT FORMATS</h3>
+<p><u>I will write what the text format looks like and the tag in parenthesis.</u></p>
+<p>This is <b>bold</b> text. <b>(b)</b></p>
+<p>This is <i>italic</i> text. <b>(i)</b></p>
+<p>This is <u>underlined</u> text. <b>(u)</b></p>
+<p>This is <sup>supscript</sup> text. <b>(sup)</b></p>
+<p>This is <sub>subscript</sub> text. <b>(sub)</b></p>
+<p>This is <mark>marked</mark> text. <b>(mark)</b></p>
+<p>This is <big>big</big> text. <b>(big)</b></p>
+<p>This is <small>small</small> text. <b>(small)</b></p>
+<p>This is a paragraph. <b>(p)</b></p>
+<dd>This is a description.<b>(dd)</b></dd>
+<p><a href="index.htm">This is an anchor tag. (a)</a> Anchor tags create hyperlinks.</p>
+<dd><small>This hyperlink takes you to the homepage.</small></dd>
+
+</div>
+</body>
+<div id="a1a-arc-widget">
+  <button id="a1a-arc-toggle" aria-label="Open site menu" aria-expanded="false">a1a</button>
+  <div id="a1a-arc-panel">
+   <div id="a1a-arc-logo">a1a<span>.ca</span></div>
+    <a class="a1a-arc-btn" href="../../index.html">home</a>
+    <a class="a1a-arc-btn" href="../">go back</a>
+    <a class="a1a-arc-btn" href="../../blog.html">blog</a>
+    <p id="a1a-arc-note">you're viewing an archived version of this page &mdash; kept as-is.</p>
+  </div>
+</div>
+<style>
+  #a1a-arc-widget, #a1a-arc-widget * {
+    box-sizing: border-box !important;
+    font-family: Verdana, Tahoma, sans-serif !important;
+  }
+
+  #a1a-arc-widget {
+    position: fixed !important;
+    top: 14px !important;
+    right: 14px !important;
+    z-index: 999999 !important;
+  }
+
+  #a1a-arc-toggle {
+    height: 60px !important;
+    padding: 0 15px !important;
+    border-radius: 8px !important;
+    border: 2px solid rgb(255,170,0) !important;
+    background: rgb(23,23,23) !important;
+    color: rgb(255,170,0) !important;
+    font-size: 27pt !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+  }
+
+  #a1a-arc-toggle:hover { background: rgb(255,170,0) !important; color: rgb(23,23,23) !important; }
+
+  #a1a-arc-panel {
+    display: none;
+    position: absolute !important;
+    top: 68px !important;
+    right: 0 !important;
+    background: rgb(23,23,23) !important;
+    border: 1px solid rgb(90,90,90) !important;
+    border-radius: 8px !important;
+    padding: 14px !important;
+    width: 190px !important;
+  }
+
+  #a1a-arc-panel.open { display: block !important; }
+
+  #a1a-arc-logo {
+    color: rgb(255,255,255) !important;
+    font-size: 13pt !important;
+    font-weight: bold !important;
+    margin-bottom: 10px !important;
+  }
+
+  #a1a-arc-logo span { color: rgb(255,170,0) !important; }
+
+  .a1a-arc-btn {
+    display: block !important;
+    text-decoration: none !important;
+    background: rgb(220,220,220) !important;
+    color: rgb(0,0,0) !important;
+    border: 1px solid rgb(140,140,140) !important;
+    border-radius: 5px !important;
+    padding: 6px 10px !important;
+    margin-bottom: 6px !important;
+    font-size: 10.5pt !important;
+  }
+
+  .a1a-arc-btn:hover { background: rgb(255,170,0) !important; color: rgb(255,255,255) !important; }
+
+  #a1a-arc-note {
+    color: rgb(160,160,160) !important;
+    font-size: 8pt !important;
+    margin: 8px 0 0 !important;
+    line-height: 1.4 !important;
+  }
+
+  @media (max-width: 500px) {
+    #a1a-arc-toggle { height: 48px !important; padding: 0 18px !important; font-size: 17pt !important; }
+    #a1a-arc-panel { width: 160px !important; }
+  }
+</style>
+
+<script>
+  (function() {
+    var toggle = document.getElementById('a1a-arc-toggle');
+    var panel = document.getElementById('a1a-arc-panel');
+    toggle.addEventListener('click', function() {
+      var isOpen = panel.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+    document.addEventListener('click', function(e) {
+      if (!document.getElementById('a1a-arc-widget').contains(e.target)) {
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
+</html>
+
+

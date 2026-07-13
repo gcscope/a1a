@@ -1,0 +1,19 @@
+p{text-align:left; font-family: tahoma, verdana;}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+header{color:rgb(152, 152, 152); padding: 20px;}
+
+title{text-align: center;}
+
+dd{font-family: tahoma, helvetica, verdana;}
+
+h1{font-family: tahoma, helvetica, verdana;}
+h2{font-family: tahoma, verdana, helvetica;}
+h3{font-family: tahoma, verdana, helvetica;}
+h4{font-family: tahoma, verdana, helvetica;}
+h5{font-family: tahoma, verdana, helvetica;}
+h6{font-family: tahoma, verdana, helvetica;}
