@@ -156,6 +156,13 @@ h1 { margin: 0; }
   align-items: flex-start;
 }
 
+.kofi-shrink {
+	transform: scale(0.95);
+	transform-origin: left center;
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
 /* ===== DARK MODE OVERRIDES ===== */
 
 [data-theme="dark"] .stuff {
@@ -254,6 +261,12 @@ h1 { margin: 0; }
 	.bloglist {
 		max-width: 100%;
 		font-size: 12pt;
+	}
+
+	.bloglist img.arc {
+		width: 100% !important;
+		height: auto !important;
+		display: block;
 	}
 
 	.container {
