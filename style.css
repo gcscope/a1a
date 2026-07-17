@@ -2,7 +2,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: rgb(70, 70, 70);
-	background-image: linear-gradient(black 18.5%, rgb(255,170,0));
+	background-image: linear-gradient(in oklch, black 18.5%, rgb(255,170,0));
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-size: cover;
