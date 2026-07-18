@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Main site -->
   <url><loc>https://a1a.ca/</loc></url>
   <url><loc>https://a1a.ca/blog.html</loc></url>
   <url><loc>https://a1a.ca/autobio.html</loc></url>
   <url><loc>https://a1a.ca/oldtext.html</loc></url>
-
-  <!-- Blogs -->
+  <url><loc>https://a1a.ca/os/</loc></url>
+  <url><loc>https://a1a.ca/os/cs/</loc></url>
   <url><loc>https://a1a.ca/blogs/blog1.html</loc></url>
   <url><loc>https://a1a.ca/blogs/blog2.html</loc></url>
   <url><loc>https://a1a.ca/blogs/blog3.html</loc></url>
   <url><loc>https://a1a.ca/blogs/blog4.html</loc></url>
   <url><loc>https://a1a.ca/blogs/blog5.html</loc></url>
   <url><loc>https://a1a.ca/blogs/blogold.html</loc></url>
-
-  <!-- Archive hub -->
   <url><loc>https://a1a.ca/ar/</loc></url>
-
-  <!-- Archive: gcscope.com (2023) -->
   <url><loc>https://a1a.ca/ar/gc/</loc></url>
   <url><loc>https://a1a.ca/ar/gc/contactme.html</loc></url>
   <url><loc>https://a1a.ca/ar/gc/lightsaberfights.html</loc></url>
   <url><loc>https://a1a.ca/ar/gc/opinionsnstuff.html</loc></url>
-
-  <!-- Archive: old a1aplus test page (2024) -->
   <url><loc>https://a1a.ca/ar/oa/</loc></url>
-
-  <!-- Archive: old a1a homepage, used with real content (2024) -->
   <url><loc>https://a1a.ca/ar/o1/</loc></url>
-
 </urlset>
