@@ -182,30 +182,24 @@ This is a never-ending comment wall. Anybody can post &mdash; no account, no log
   });
 </script>
 
-<!-- ===== COMMENT WALL — Firebase Firestore + Anonymous Auth ===== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import {
-  getAuth, signInAnonymously, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-import {
-  getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
-  query, orderBy, limit, onSnapshot, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+  import {
+    getAuth, signInAnonymously, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
   import {
     getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
     query, orderBy, limit, onSnapshot, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
   const firebaseConfig = {
-  	apiKey: "AIzaSyDoBHs7Rw4Aufn1qByWcFSVBXYk23BFRDw",
-  	authDomain: "a1acomments.firebaseapp.com",
-  	projectId: "a1acomments",
- 	storageBucket: "a1acomments.firebasestorage.app",
-  	messagingSenderId: "272786289312",
-  	appId: "1:272786289312:web:5b093ebbf184df89d1cfc5"
+    apiKey: "AIzaSyDoBHs7Rw4Aufn1qByWcFSVBXYk23BFRDw",
+    authDomain: "a1acomments.firebaseapp.com",
+    projectId: "a1acomments",
+    storageBucket: "a1acomments.firebasestorage.app",
+    messagingSenderId: "272786289312",
+    appId: "1:272786289312:web:5b093ebbf184df89d1cfc5"
   };
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
