@@ -373,7 +373,7 @@ h1 { margin: 0; }
 	}
 
 	.stuff img {
-		width: 100% !important;
+		max-width: 100% !important;
 		height: auto !important;
 	}
 
