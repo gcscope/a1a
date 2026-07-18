@@ -270,6 +270,125 @@ h1 { margin: 0; }
 	margin-top: 6px;
 }
 
+/* ===== ACCOUNT / LOGIN WIDGET ===== */
+
+#acct-widget {
+	position: relative;
+	display: inline-block;
+	margin-bottom: 10px;
+	font-family: Verdana, Tahoma, sans-serif;
+}
+
+#acct-toggle {
+	font-size: 13pt;
+	border-radius: 5px;
+	font-family: Verdana, Tahoma, sans-serif !important;
+	-webkit-appearance: none;
+	appearance: none;
+	padding: 3px 8px;
+	border: 1px solid rgb(140, 140, 140);
+	background-color: rgb(220, 220, 220);
+	color: rgb(0, 0, 0);
+	cursor: pointer;
+}
+
+#acct-toggle:hover {
+	color: rgb(255, 255, 255);
+	background-color: rgb(255, 170, 0);
+}
+
+#acct-panel {
+	display: none;
+	position: absolute;
+	top: 50px;
+	right: 0;
+	background: rgb(23, 23, 23);
+	border: 1px solid rgb(90, 90, 90);
+	border-radius: 8px;
+	padding: 16px;
+	width: 250px;
+}
+
+#acct-panel.open { display: block; }
+
+.acct-status {
+	color: rgb(220, 220, 220);
+	font-size: 9.5pt;
+	margin: 0 0 10px;
+}
+
+.acct-status b { color: rgb(255, 170, 0); }
+
+.acct-tabs {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 10px;
+}
+
+.acct-tab {
+	flex: 1;
+	font-size: 9pt;
+	padding: 5px 6px;
+	border-radius: 5px;
+	border: 1px solid rgb(90, 90, 90);
+	background: rgb(40, 40, 40);
+	color: rgb(200, 200, 200);
+	cursor: pointer;
+	font-family: Verdana, Tahoma, sans-serif;
+}
+
+.acct-tab.active {
+	background: rgb(255, 170, 0);
+	color: rgb(23, 23, 23);
+	border-color: rgb(255, 170, 0);
+}
+
+.acct-form {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.acct-form input {
+	font-family: Verdana, Tahoma, sans-serif;
+	font-size: 10pt;
+	padding: 6px 8px;
+	border: 1px solid rgb(90, 90, 90);
+	border-radius: 5px;
+	background: rgb(40, 40, 40);
+	color: rgb(220, 220, 220);
+}
+
+.acct-btn {
+	font-size: 10pt;
+	font-family: Verdana, Tahoma, sans-serif;
+	padding: 6px 10px;
+	border-radius: 5px;
+	border: 1px solid rgb(140, 140, 140);
+	background-color: rgb(220, 220, 220);
+	color: rgb(0, 0, 0);
+	cursor: pointer;
+}
+
+.acct-btn:hover {
+	background-color: rgb(255, 170, 0);
+	color: rgb(255, 255, 255);
+}
+
+.acct-note {
+	font-size: 8pt;
+	color: rgb(150, 150, 150);
+	margin: 4px 0 0;
+	line-height: 1.4;
+}
+
+.acct-error {
+	font-size: 8.5pt;
+	color: rgb(255, 120, 120);
+	margin: 6px 0 0;
+	min-height: 12px;
+}
+
 [data-theme="dark"] .stuff {
 	background-color: rgb(35, 35, 35) !important;
 	color: rgb(225, 225, 225) !important;
@@ -373,7 +492,7 @@ h1 { margin: 0; }
 	}
 
 	.stuff img {
-		max-width: 100% !important;
+		max-width: 98% !important;
 		height: auto !important;
 	}
 
@@ -411,5 +530,8 @@ h1 { margin: 0; }
 	.os {
 		font-size: 30pt;
 	}
+
+	#acct-toggle { height: 38px; padding: 0 14px; font-size: 10.5pt; }
+	#acct-panel { width: 210px; }
 
 }

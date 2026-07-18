@@ -28,6 +28,38 @@
 <p>
 This is the never ending comment section. You don't need to log in, and you can edit or delete your comments, so write what you want and post it for all to see. Right now there's no moderation, so you can say whatever you want, but modest, or I will actually add moderation.
 </p>
+<div id="acct-widget">
+<button id="acct-toggle" aria-expanded="false">account</button>
+<div id="acct-panel">
+<div id="acct-guest-view">
+<p class="acct-status">
+posting as <b id="acct-guest-name">...</b> (guest, this browser only)
+</p>
+<div class="acct-tabs">
+<button class="acct-tab active" data-tab="signup">create account</button>
+<button class="acct-tab" data-tab="login">log in</button>
+ </div>
+<div id="acct-signup-form" class="acct-form">
+<input id="acct-signup-email" type="email" placeholder="email">
+<input id="acct-signup-password" type="password" placeholder="password (6+ characters)">
+<button id="acct-signup-btn" class="acct-btn">create account</button>
+<p class="acct-note">
+this keeps your current posts, and lets you log back in on other devices.
+</p>
+</div>
+<div id="acct-login-form" class="acct-form" style="display:none;">
+<input id="acct-login-email" type="email" placeholder="email">
+<input id="acct-login-password" type="password" placeholder="password">
+<button id="acct-login-btn" class="acct-btn">log in</button>
+</div>
+<p id="acct-error" class="acct-error"></p>
+</div>
+<div id="acct-loggedin-view" style="display:none;">
+<p class="acct-status">logged in as <b id="acct-email-display"></b></p>
+<button id="acct-logout-btn" class="acct-btn">log out</button>
+</div>
+</div>
+</div>
 <div id="wall-form">
   <input id="wall-name" type="text" maxlength="40" placeholder="name">
   <input id="wall-subject" type="text" maxlength="80" placeholder="subject">
@@ -58,12 +90,38 @@ This is the never ending comment section. You don't need to log in, and you can 
   btn.addEventListener('click', () => {
     setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
+
+const acctToggle = document.getElementById('acct-toggle');
+  const acctPanel = document.getElementById('acct-panel');
+  acctToggle.addEventListener('click', () => {
+    const isOpen = acctPanel.classList.toggle('open');
+    acctToggle.setAttribute('aria-expanded', isOpen);
+  });
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('acct-widget').contains(e.target)) {
+      acctPanel.classList.remove('open');
+      acctToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.querySelectorAll('.acct-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.acct-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.tab;
+      document.getElementById('acct-signup-form').style.display = target === 'signup' ? 'flex' : 'none';
+      document.getElementById('acct-login-form').style.display = target === 'login' ? 'flex' : 'none';
+    });
+  });
+
 </script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
   import {
-    getAuth, signInAnonymously, onAuthStateChanged
+    getAuth, signInAnonymously, onAuthStateChanged,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    linkWithCredential, EmailAuthProvider, signOut
   } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
   import {
     getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
@@ -97,7 +155,59 @@ This is the never ending comment section. You don't need to log in, and you can 
   const statusEl = document.getElementById('wall-status');
   const postsEl = document.getElementById('wall-posts');
   const loadingEl = document.getElementById('wall-loading');
+  const guestView = document.getElementById('acct-guest-view');
+  const loggedinView = document.getElementById('acct-loggedin-view');
+  const guestNameEl = document.getElementById('acct-guest-name');
+  const emailDisplay = document.getElementById('acct-email-display');
+  const acctError = document.getElementById('acct-error');
+  const signupEmail = document.getElementById('acct-signup-email');
+  const signupPassword = document.getElementById('acct-signup-password');
+  const loginEmail = document.getElementById('acct-login-email');
+  const loginPassword = document.getElementById('acct-login-password');
 
+  function showAcctError(msg) {
+    acctError.textContent = msg;
+  }
+
+  document.getElementById('acct-signup-btn').addEventListener('click', async () => {
+    showAcctError('');
+    const email = signupEmail.value.trim();
+    const password = signupPassword.value;
+    if (!email || password.length < 6) {
+      showAcctError('enter a valid email and a password of 6+ characters.');
+      return;
+    }
+    try {
+      const credential = EmailAuthProvider.credential(email, password);
+      if (auth.currentUser && auth.currentUser.isAnonymous) {
+        await linkWithCredential(auth.currentUser, credential);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
+    } catch (err) {
+      showAcctError(err.message.replace('Firebase: ', ''));
+    }
+  });
+
+  document.getElementById('acct-login-btn').addEventListener('click', async () => {
+    showAcctError('');
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+    if (!email || !password) {
+      showAcctError('enter your email and password.');
+      return;
+    }
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      showAcctError(err.message.replace('Firebase: ', ''));
+    }
+  });
+
+  document.getElementById('acct-logout-btn').addEventListener('click', async () => {
+    await signOut(auth);
+    await signInAnonymously(auth);
+  });
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
@@ -254,10 +364,24 @@ This is the never ending comment section. You don't need to log in, and you can 
     if (user) {
       currentUid = user.uid;
       if (lastSnapshot) renderPosts(lastSnapshot);
+
+      if (user.isAnonymous) {
+        guestView.style.display = 'block';
+        loggedinView.style.display = 'none';
+        guestNameEl.textContent = nameInput.value.trim() || 'anonymous';
+      } else {
+        guestView.style.display = 'none';
+        loggedinView.style.display = 'block';
+        emailDisplay.textContent = user.email;
+      }
     }
   });
   signInAnonymously(auth).catch((err) => console.error('anon auth failed', err));
-
+  nameInput.addEventListener('input', () => {
+    if (auth.currentUser && auth.currentUser.isAnonymous) {
+      guestNameEl.textContent = nameInput.value.trim() || 'anonymous';
+    }
+  });
   submitBtn.addEventListener('click', async () => {
     if (!currentUid) {
       statusEl.textContent = "still connecting, try again in a second.";
