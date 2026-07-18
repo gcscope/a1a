@@ -372,11 +372,13 @@ const acctToggle = document.getElementById('acct-toggle');
       } else {
         guestView.style.display = 'none';
         loggedinView.style.display = 'block';
-        emailDisplay.textContent = user.email;
+        emailDisplay.textContent = user.displayName || user.email;
       }
+    } else {
+      // no session at all (first-ever visit, or after logout) — start as guest
+      signInAnonymously(auth).catch((err) => console.error('anon auth failed', err));
     }
   });
-  signInAnonymously(auth).catch((err) => console.error('anon auth failed', err));
   nameInput.addEventListener('input', () => {
     if (auth.currentUser && auth.currentUser.isAnonymous) {
       guestNameEl.textContent = nameInput.value.trim() || 'anonymous';
