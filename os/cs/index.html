@@ -10,131 +10,10 @@
 <link rel="stylesheet" href="../../style.css">
 <link rel="icon" href="../../images/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="../../images/favicon.png">
-<style>
-  #wall-form {
-    max-width: 990px;
-    margin: 15px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  #wall-name, #wall-subject {
-    font-family: Verdana, Tahoma, sans-serif;
-    font-size: 11pt;
-    padding: 6px 10px;
-    border: 1px solid rgb(140, 140, 140);
-    border-radius: 5px;
-    max-width: 320px;
-  }
-
-  #wall-message {
-    font-family: Verdana, Tahoma, sans-serif;
-    font-size: 11pt;
-    padding: 8px 10px;
-    border: 1px solid rgb(140, 140, 140);
-    border-radius: 5px;
-    resize: vertical;
-    min-height: 70px;
-  }
-
-  #wall-submit, .wall-btn {
-    font-size: 12pt;
-    font-family: Verdana, Tahoma, sans-serif !important;
-    padding: 6px 16px;
-    border-radius: 5px;
-    border: 1px solid rgb(140, 140, 140);
-    background-color: rgb(220, 220, 220);
-    color: rgb(0, 0, 0);
-    cursor: pointer;
-    align-self: flex-start;
-  }
-
-  #wall-submit:hover, .wall-btn:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(255, 170, 0);
-  }
-
-  .wall-btn.danger:hover { background-color: rgb(200, 60, 60); }
-
-  #wall-status {
-    font-size: 9.5pt;
-    color: rgb(120, 120, 120);
-    min-height: 14px;
-  }
-
-  #wall-posts {
-    max-width: 990px;
-    margin: 20px auto 0;
-  }
-
-  .wall-post {
-	background-color: rgb(240, 240, 240);
-	padding: 14px 16px;
-	margin-bottom: 10px;
-	border-radius: 6px;
-}
-
-  .wall-post-subject {
-    font-weight: bold;
-    font-size: 13pt;
-    margin: 0;
-  }
-
-  .wall-post-meta {
-    font-size: 9pt;
-    color: rgb(140, 140, 140);
-    margin: 2px 0 6px;
-  }
-
-  .wall-post-name {
-    font-weight: bold;
-    color: rgb(255, 170, 0);
-  }
-
-  .wall-post-text {
-    margin: 0;
-    font-size: 11pt;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-
-  .wall-post-actions {
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
-  }
-
-  .wall-post-actions button {
-    font-size: 9pt;
-    padding: 3px 10px;
-  }
-
-  .wall-edit-area {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 6px;
-  }
-
-  [data-theme="dark"] #wall-name,
-  [data-theme="dark"] #wall-subject,
-  [data-theme="dark"] #wall-message,
-  [data-theme="dark"] .wall-edit-area input,
-  [data-theme="dark"] .wall-edit-area textarea {
-    background-color: rgb(50, 50, 50);
-    color: rgb(225, 225, 225);
-    border-color: rgb(80, 80, 80);
-  }
-
- [data-theme="dark"] .wall-post {
-    background-color: rgb(45, 45, 45);
-}
-</style>
 </head>
 <body>
 <div class="title">
-<h1><a class="webtitle" href="../../index.html">comment<span style="color: rgb(255, 170, 0);">section</span></a></h1>
+<h1><span class="os"><a class="webtitle" href="../../index.html">comment<span style="color: rgb(255, 170, 0);">section</span></a></span></h1>
 </div>
 <div class="buttons">
 <button class="links" onclick="location.href='../'">go back</button>
@@ -156,14 +35,13 @@ This is the never ending comment section. You don't need to log in, and you can 
   <button id="wall-submit">post</button>
   <div id="wall-status"></div>
 </div>
+<hr>
 <div id="wall-posts">
-  <p id="wall-loading" style="font-size: 10pt; color: rgb(140,140,140);">loading comments...</p>
-</div>
-
+<p id="wall-loading" style="font-size: 10pt; color: rgb(140,140,140);">loading comments...</p>
 </div>
 </div>
 </div>
-
+</div>
 <script>
   document.documentElement.classList.add('no-transition');
   const btn = document.getElementById('themeToggle');
@@ -356,7 +234,7 @@ This is the never ending comment section. You don't need to log in, and you can 
   }
 
   async function handleDelete(id) {
-    if (!confirm('Delete this post? This can\'t be undone.')) return;
+    if (!confirm('Delete this comment? This can\'t be undone.')) return;
     try {
       await deleteDoc(doc(db, 'wall-posts', id));
     } catch (err) {
