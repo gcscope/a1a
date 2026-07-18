@@ -532,6 +532,10 @@ h1 { margin: 0; }
 	}
 
 	#acct-toggle { height: 38px; padding: 0 14px; font-size: 10.5pt; }
-	#acct-panel { width: 210px; }
+	#acct-panel {
+		left: 0;
+		right: auto;
+		width: min(280px, calc(100vw - 40px));
+	}
 
 }
