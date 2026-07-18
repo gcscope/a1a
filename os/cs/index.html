@@ -121,7 +121,8 @@ const acctToggle = document.getElementById('acct-toggle');
   import {
     getAuth, signInAnonymously, onAuthStateChanged,
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    linkWithCredential, EmailAuthProvider, signOut
+    linkWithCredential, EmailAuthProvider, signOut, updateProfile,
+    setPersistence, browserLocalPersistence
   } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
   import {
     getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
@@ -140,6 +141,8 @@ const acctToggle = document.getElementById('acct-toggle');
   const auth = getAuth(app);
   const db = getFirestore(app);
   const postsRef = collection(db, "wall-posts");
+
+  await setPersistence(auth, browserLocalPersistence);
 
   let currentUid = null;
 
