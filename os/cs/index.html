@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>other stuff - a1a.ca</title>
+<meta charset="UTF-8">
+<meta name="description" content="a1a.ca - A never-ending comment wall. Anybody can post.">
+<meta name="keywords" content="a1a, A1A, Scopazzi">
+<meta name="author" content="Giancarlo Scopazzi">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../style.css">
+<link rel="icon" href="../../images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../../images/favicon.png">
+<style>
+  #wall-form {
+    max-width: 990px;
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #wall-name, #wall-subject {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: 11pt;
+    padding: 6px 10px;
+    border: 1px solid rgb(140, 140, 140);
+    border-radius: 5px;
+    max-width: 320px;
+  }
+
+  #wall-message {
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: 11pt;
+    padding: 8px 10px;
+    border: 1px solid rgb(140, 140, 140);
+    border-radius: 5px;
+    resize: vertical;
+    min-height: 70px;
+  }
+
+  #wall-submit, .wall-btn {
+    font-size: 12pt;
+    font-family: Verdana, Tahoma, sans-serif !important;
+    padding: 6px 16px;
+    border-radius: 5px;
+    border: 1px solid rgb(140, 140, 140);
+    background-color: rgb(220, 220, 220);
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    align-self: flex-start;
+  }
+
+  #wall-submit:hover, .wall-btn:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 170, 0);
+  }
+
+  .wall-btn.danger:hover { background-color: rgb(200, 60, 60); }
+
+  #wall-status {
+    font-size: 9.5pt;
+    color: rgb(120, 120, 120);
+    min-height: 14px;
+  }
+
+  #wall-posts {
+    max-width: 990px;
+    margin: 20px auto 0;
+  }
+
+  .wall-post {
+	background-color: rgb(240, 240, 240);
+	padding: 14px 16px;
+	margin-bottom: 10px;
+	border-radius: 6px;
+}
+
+  .wall-post-subject {
+    font-weight: bold;
+    font-size: 13pt;
+    margin: 0;
+  }
+
+  .wall-post-meta {
+    font-size: 9pt;
+    color: rgb(140, 140, 140);
+    margin: 2px 0 6px;
+  }
+
+  .wall-post-name {
+    font-weight: bold;
+    color: rgb(255, 170, 0);
+  }
+
+  .wall-post-text {
+    margin: 0;
+    font-size: 11pt;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .wall-post-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .wall-post-actions button {
+    font-size: 9pt;
+    padding: 3px 10px;
+  }
+
+  .wall-edit-area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  [data-theme="dark"] #wall-name,
+  [data-theme="dark"] #wall-subject,
+  [data-theme="dark"] #wall-message,
+  [data-theme="dark"] .wall-edit-area input,
+  [data-theme="dark"] .wall-edit-area textarea {
+    background-color: rgb(50, 50, 50);
+    color: rgb(225, 225, 225);
+    border-color: rgb(80, 80, 80);
+  }
+
+ [data-theme="dark"] .wall-post {
+    background-color: rgb(45, 45, 45);
+}
+</style>
+</head>
+<body>
+<div class="title">
+<h1><span class="titlecolour"><a class="webtitle" href="../../index.html">other</a></span> stuff</h1>
+</div>
+<div class="buttons">
+<button class="links" onclick="location.href='../../index.html'">home</button>
+<button class="links" onclick="location.href='../../blog.html'">blog</button>
+<button class="links" onclick="location.href='../../ar/'">archive</button>
+<button class="links" id="themeToggle">light mode</button>
+</div>
+<div class="container">
+<div class="main">
+<div class="stuff">
+<h1 style="margin-top: 5px;">OTHER STUFF</h1>
+<p>
+This is a never-ending comment wall. Anybody can post &mdash; no account, no login, just type something and hit send. You can edit or delete your own posts later (the site quietly remembers which ones are yours). Be nice, or at least be interesting.
+</p>
+<div id="wall-form">
+  <input id="wall-name" type="text" maxlength="40" placeholder="name (optional)">
+  <input id="wall-subject" type="text" maxlength="80" placeholder="subject">
+  <textarea id="wall-message" maxlength="500" placeholder="say something..."></textarea>
+  <button id="wall-submit">post</button>
+  <div id="wall-status"></div>
+</div>
+<div id="wall-posts">
+  <p id="wall-loading" style="font-size: 10pt; color: rgb(140,140,140);">loading comments...</p>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+
+<!-- ===== COMMENT WALL — Firebase Firestore + Anonymous Auth ===== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import {
+  getAuth, signInAnonymously, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+import {
+  getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
+  query, orderBy, limit, onSnapshot, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+  import {
+    getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
+    query, orderBy, limit, onSnapshot, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+  	apiKey: "AIzaSyDoBHs7Rw4Aufn1qByWcFSVBXYk23BFRDw",
+  	authDomain: "a1acomments.firebaseapp.com",
+  	projectId: "a1acomments",
+ 	storageBucket: "a1acomments.firebasestorage.app",
+  	messagingSenderId: "272786289312",
+  	appId: "1:272786289312:web:5b093ebbf184df89d1cfc5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const postsRef = collection(db, "wall-posts");
+
+  let currentUid = null;
+
+  const nameInput = document.getElementById('wall-name');
+  const subjectInput = document.getElementById('wall-subject');
+  const messageInput = document.getElementById('wall-message');
+  const submitBtn = document.getElementById('wall-submit');
+  const statusEl = document.getElementById('wall-status');
+  const postsEl = document.getElementById('wall-posts');
+  const loadingEl = document.getElementById('wall-loading');
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function timeAgo(date) {
+    if (!date) return '';
+    const seconds = Math.floor((new Date() - date) / 1000);
+    const units = [
+      ['year', 31536000], ['month', 2592000], ['day', 86400],
+      ['hour', 3600], ['minute', 60]
+    ];
+    for (const [name, secs] of units) {
+      const val = Math.floor(seconds / secs);
+      if (val >= 1) return val + ' ' + name + (val > 1 ? 's' : '') + ' ago';
+    }
+    return 'just now';
+  }
+
+  function renderPosts(snapshot) {
+    loadingEl.remove?.();
+    postsEl.innerHTML = '';
+    if (snapshot.empty) {
+      postsEl.innerHTML = '<p style="font-size: 10pt; color: rgb(140,140,140);">No posts yet. Be the first.</p>';
+      return;
+    }
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      const id = docSnap.id;
+      const time = data.timestamp ? data.timestamp.toDate() : null;
+      const isOwner = currentUid && data.authorUid === currentUid;
+
+      const el = document.createElement('div');
+      el.className = 'wall-post';
+
+      const subjectP = document.createElement('p');
+      subjectP.className = 'wall-post-subject';
+      subjectP.textContent = data.subject || '(no subject)';
+
+      const metaP = document.createElement('p');
+      metaP.className = 'wall-post-meta';
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'wall-post-name';
+      nameSpan.textContent = data.name || 'anonymous';
+      metaP.appendChild(nameSpan);
+      metaP.append(' — ' + timeAgo(time) + (data.editedAt ? ' (edited)' : ''));
+
+      const messageP = document.createElement('p');
+      messageP.className = 'wall-post-text';
+      messageP.textContent = data.message;
+
+      el.appendChild(subjectP);
+      el.appendChild(metaP);
+      el.appendChild(messageP);
+
+      if (isOwner) {
+        const actions = document.createElement('div');
+        actions.className = 'wall-post-actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'wall-btn';
+        editBtn.textContent = 'edit';
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'wall-btn danger';
+        deleteBtn.textContent = 'delete';
+
+        editBtn.addEventListener('click', () => startEdit(el, id, data));
+        deleteBtn.addEventListener('click', () => handleDelete(id));
+
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
+        el.appendChild(actions);
+      }
+
+      postsEl.appendChild(el);
+    });
+  }
+
+  function startEdit(postEl, id, data) {
+    postEl.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'wall-edit-area';
+
+    const subjectField = document.createElement('input');
+    subjectField.type = 'text';
+    subjectField.maxLength = 80;
+    subjectField.value = data.subject || '';
+
+    const messageField = document.createElement('textarea');
+    messageField.maxLength = 500;
+    messageField.value = data.message || '';
+    messageField.style.minHeight = '70px';
+
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'wall-btn';
+    saveBtn.textContent = 'save';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'wall-btn';
+    cancelBtn.textContent = 'cancel';
+
+    const actions = document.createElement('div');
+    actions.style.display = 'flex';
+    actions.style.gap = '8px';
+    actions.appendChild(saveBtn);
+    actions.appendChild(cancelBtn);
+
+    wrap.appendChild(subjectField);
+    wrap.appendChild(messageField);
+    wrap.appendChild(actions);
+    postEl.appendChild(wrap);
+
+    saveBtn.addEventListener('click', async () => {
+      const newSubject = subjectField.value.trim().slice(0, 80);
+      const newMessage = messageField.value.trim().slice(0, 500);
+      if (!newMessage) return;
+      saveBtn.disabled = true;
+      try {
+        await updateDoc(doc(db, 'wall-posts', id), {
+          subject: newSubject,
+          message: newMessage,
+          editedAt: serverTimestamp()
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Couldn't save the edit.");
+        saveBtn.disabled = false;
+      }
+    });
+
+    cancelBtn.addEventListener('click', () => renderPosts(lastSnapshot));
+  }
+
+  async function handleDelete(id) {
+    if (!confirm('Delete this post? This can\'t be undone.')) return;
+    try {
+      await deleteDoc(doc(db, 'wall-posts', id));
+    } catch (err) {
+      console.error(err);
+      alert("Couldn't delete this post.");
+    }
+  }
+
+  let lastSnapshot = null;
+  const q = query(postsRef, orderBy('timestamp', 'desc'), limit(200));
+  onSnapshot(q, (snap) => { lastSnapshot = snap; renderPosts(snap); }, (err) => {
+    postsEl.innerHTML = '<p style="font-size: 10pt; color: rgb(200,80,80);">Couldn\'t load comments. Check your Firebase config.</p>';
+    console.error(err);
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUid = user.uid;
+      if (lastSnapshot) renderPosts(lastSnapshot);
+    }
+  });
+  signInAnonymously(auth).catch((err) => console.error('anon auth failed', err));
+
+  submitBtn.addEventListener('click', async () => {
+    if (!currentUid) {
+      statusEl.textContent = "still connecting, try again in a second.";
+      return;
+    }
+    const message = messageInput.value.trim();
+    const subject = subjectInput.value.trim();
+    if (!subject) {
+      statusEl.textContent = "give it a subject.";
+      return;
+    }
+    if (!message) {
+      statusEl.textContent = "say something first.";
+      return;
+    }
+    submitBtn.disabled = true;
+    statusEl.textContent = "posting...";
+    try {
+      await addDoc(postsRef, {
+        name: nameInput.value.trim().slice(0, 40) || 'anonymous',
+        subject: subject.slice(0, 80),
+        message: message.slice(0, 500),
+        authorUid: currentUid,
+        timestamp: serverTimestamp()
+      });
+      subjectInput.value = '';
+      messageInput.value = '';
+      statusEl.textContent = "posted.";
+      setTimeout(() => { statusEl.textContent = ''; }, 2000);
+    } catch (err) {
+      statusEl.textContent = "something went wrong, try again.";
+      console.error(err);
+    }
+    submitBtn.disabled = false;
+  });
+</script>
+
+</body>
+</html>
