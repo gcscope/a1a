@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>other stuff - a1a.ca</title>
+<meta name="description" content="a1a.ca - A list of a bunch of other stuff to do on this website.">
+<meta name="keywords" content="a1a, A1A, Scopazzi">
+<meta name="author" content="Giancarlo Scopazzi">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="images/favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="title">
+<h1><span class="titlecolour">other</span>stuff</h1>
+</div>
+<div class="buttons">
+<!--Buttons go here-->
+<button class="links" onclick="location.href='../index.html'">go back</button>
+<button class="links" onclick="location.href='../blog.html'">blog</button>
+<button class="links" onclick="location.href='../ar'">archive</button>
+<button class="links" id="themeToggle">light mode</button>
+</div>
+<div class="container">
+<div class="main">
+<div class="stuff">
+<h1 style="margin-top: 5px;">OTHER STUFF</h1>
+<p>
+Behold is the list of other things here to do on this site. Rogt now there's only the <b>never-ending comment section</b>, but I will add more things to do soon.
+</p>
+<hr>
+<div align="left" class="bloglist">
+<p><a class="i" href="cs/"><b>The Never-Ending Comment Section</b></a><img class="arc" src="../images/otherstuffimg1.png" width="100%;"></p>
+</div>
+</div>
+</div>
+</div>
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
