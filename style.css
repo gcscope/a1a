@@ -275,6 +275,7 @@ h1 { margin: 0; }
 #acct-widget {
 	position: relative;
 	display: inline-block;
+	margin-top: 12px;
 	margin-bottom: 10px;
 	font-family: Verdana, Tahoma, sans-serif;
 }
