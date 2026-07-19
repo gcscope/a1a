@@ -28,6 +28,9 @@
 <p>
 This is the never ending comment section. You don't need to log in, but if you want to be able to edit and delete comments across all devices, you can. So write what you want and post it for all to see. Right now there's no moderation, so you can say whatever you want. But be modest, or I will actually add it.
 </p>
+<p>
+To change your username (even without an account) go to the account button and press settings, you will see your display name which you can change. click save to confirm.
+</p>
 <div id="acct-widget">
 <button id="acct-toggle" aria-expanded="false">account</button>
 <div id="acct-panel">
@@ -41,7 +44,7 @@ posting as <b id="acct-guest-name">...</b> (guest, this browser only)
  </div>
 <div id="acct-signup-form" class="acct-form">
   <input id="acct-signup-name" type="text" maxlength="40" placeholder="username">
-  <input id="acct-signup-email" type="text" placeholder="username">
+  <input id="acct-signup-email" type="text" placeholder="email">
   <input id="acct-signup-password" type="password" placeholder="password (6+ characters)">
   <button id="acct-signup-btn" class="acct-btn">create account</button>
 <p class="acct-note">
@@ -70,7 +73,6 @@ this keeps your current posts, and lets you log back in on other devices.
 
   </div>
 </div>
-<div id="wall-form">
   <div id="wall-form">
   <div id="wall-name-row">
     <input id="wall-name" type="text" placeholder="name" readonly class="locked">
@@ -251,36 +253,35 @@ import {
   document.getElementById('acct-signup-btn').addEventListener('click', async () => {
     showAcctError('');
     const chosenName = signupName.value.trim();
-    const username = signupEmail.value.trim();
+    const email = signupEmail.value.trim();
     const password = signupPassword.value;
     if (!chosenName) {
-      showAcctError('enter a name.');
+      showAcctError('enter a username.');
       return;
     }
     if (isNameBanned(chosenName)) {
-      showAcctError('that username isn't available.');
+      showAcctError("that username isn't available.");
       return;
     }
-    if (username.length < 3 || password.length < 6) {
-      showAcctError('username needs 3+ characters, password needs 6+.');
+    if (!email || password.length < 6) {
+      showAcctError('enter a valid email and a password of 6+ characters.');
       return;
     }
-    const fakeEmail = usernameToEmail(username);
     try {
-      const credential = EmailAuthProvider.credential(fakeEmail, password);
+      const credential = EmailAuthProvider.credential(email, password);
       let user;
       if (auth.currentUser && auth.currentUser.isAnonymous) {
         const result = await linkWithCredential(auth.currentUser, credential);
         user = result.user;
       } else {
-        const result = await createUserWithEmailAndPassword(auth, fakeEmail, password);
+        const result = await createUserWithEmailAndPassword(auth, email, password);
         user = result.user;
       }
       await updateProfile(user, { displayName: chosenName });
       saveCurrentName(chosenName);
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
-        showAcctError('that username is taken.');
+        showAcctError('an account with that email already exists.');
       } else {
         showAcctError(err.message.replace('Firebase: ', ''));
       }
