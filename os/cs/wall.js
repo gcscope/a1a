@@ -325,18 +325,20 @@ function renderPosts(snapshot) {
     el.appendChild(metaP);
     el.appendChild(messageP);
 
-    if (data.commentNumber) {
-      const replyRow = document.createElement('div');
-      replyRow.className = 'wall-reply-row';
-      const replyBtn = document.createElement('button');
-      replyBtn.className = 'wall-btn';
-      replyBtn.textContent = 'reply';
-      replyBtn.addEventListener('click', () => {
+    const replyRow = document.createElement('div');
+    replyRow.className = 'wall-reply-row';
+    const replyBtn = document.createElement('button');
+    replyBtn.className = 'wall-btn';
+    replyBtn.textContent = 'reply';
+    replyBtn.addEventListener('click', () => {
+      if (data.commentNumber) {
         insertReplyText((data.name || 'anonymous') + ':' + data.commentNumber + ' ');
-      });
-      replyRow.appendChild(replyBtn);
-      el.appendChild(replyRow);
-    }
+      } else {
+        insertReplyText('@' + (data.name || 'anonymous') + ' ');
+      }
+    });
+    replyRow.appendChild(replyBtn);
+    el.appendChild(replyRow);
 
     if (isOwner) {
       const actions = document.createElement('div');
