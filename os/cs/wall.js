@@ -9,7 +9,7 @@ import {
 import {
   getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
   query, orderBy, limit, onSnapshot, serverTimestamp,
-  where, getDocs, writeBatch
+  where, getDocs, writeBatch, runTransaction
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -25,6 +25,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const postsRef = collection(db, "wall-posts");
+const counterRef = doc(db, "counters", "wall-posts");
+
+async function getNextCommentNumber() {
+  return runTransaction(db, async (transaction) => {
+    const snap = await transaction.get(counterRef);
+    const current = snap.exists() ? snap.data().count : 0;
+    const next = current + 1;
+    transaction.set(counterRef, { count: next });
+    return next;
+  });
+}
 
 await setPersistence(auth, browserLocalPersistence);
 
@@ -178,6 +189,9 @@ function escapeHtml(str) {
 
 function renderFormattedText(str) {
   let escaped = escapeHtml(str);
+  escaped = escaped.replace(/([^\s:]+):(\d+)/g, (match, name, num) => {
+    return '<a href="#comment-' + num + '" class="wall-reply-link" data-num="' + num + '">' + match + '</a>';
+  });
   escaped = escaped
     .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
     .replace(/__(.+?)__/g, '<u>$1</u>')
@@ -203,6 +217,31 @@ document.querySelectorAll('#wall-toolbar .fmt-btn').forEach(btn => {
     wrapSelection(messageInput, btn.dataset.marker);
   });
 });
+
+postsEl.addEventListener('click', (e) => {
+  const link = e.target.closest('.wall-reply-link');
+  if (!link) return;
+  e.preventDefault();
+  const num = link.dataset.num;
+  const target = document.getElementById('comment-' + num);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.add('wall-highlight');
+    setTimeout(() => target.classList.remove('wall-highlight'), 1500);
+  }
+});
+
+function insertReplyText(text) {
+  const start = messageInput.selectionStart ?? messageInput.value.length;
+  const end = messageInput.selectionEnd ?? messageInput.value.length;
+  const value = messageInput.value;
+  messageInput.value = value.slice(0, start) + text + value.slice(end);
+  messageInput.focus();
+  const cursor = start + text.length;
+  messageInput.selectionStart = cursor;
+  messageInput.selectionEnd = cursor;
+  messageInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 
 function timeAgo(date) {
   if (!date) return '';
@@ -232,6 +271,7 @@ function renderPosts(snapshot) {
     const isOwner = currentUid && data.authorUid === currentUid;
     const el = document.createElement('div');
     el.className = 'wall-post';
+    if (data.commentNumber) el.id = 'comment-' + data.commentNumber;
     const subjectP = document.createElement('p');
     subjectP.className = 'wall-post-subject';
     subjectP.textContent = data.subject || '(no subject)';
@@ -241,13 +281,27 @@ function renderPosts(snapshot) {
     nameSpan.className = 'wall-post-name';
     nameSpan.textContent = data.name || 'anonymous';
     metaP.appendChild(nameSpan);
-    metaP.append(' — ' + timeAgo(time) + (data.editedAt ? ' (edited)' : ''));
+    metaP.append(' — ' + timeAgo(time) + (data.editedAt ? ' (edited)' : '') + (data.commentNumber ? ' — #' + data.commentNumber : ''));
     const messageP = document.createElement('p');
     messageP.className = 'wall-post-text';
     messageP.innerHTML = renderFormattedText(data.message);
     el.appendChild(subjectP);
     el.appendChild(metaP);
     el.appendChild(messageP);
+
+    if (data.commentNumber) {
+      const replyRow = document.createElement('div');
+      replyRow.className = 'wall-reply-row';
+      const replyBtn = document.createElement('button');
+      replyBtn.className = 'wall-btn';
+      replyBtn.textContent = 'reply';
+      replyBtn.addEventListener('click', () => {
+        insertReplyText((data.name || 'anonymous') + ':' + data.commentNumber + ' ');
+      });
+      replyRow.appendChild(replyBtn);
+      el.appendChild(replyRow);
+    }
+
     if (isOwner) {
       const actions = document.createElement('div');
       actions.className = 'wall-post-actions';
@@ -396,11 +450,13 @@ submitBtn.addEventListener('click', async () => {
   submitBtn.disabled = true;
   statusEl.textContent = "posting...";
   try {
+    const commentNumber = await getNextCommentNumber();
     await addDoc(postsRef, {
       name: nameInput.value.trim().slice(0, 40) || 'anonymous',
       subject: subject.slice(0, 80),
       message: message.slice(0, 2000),
       authorUid: currentUid,
+      commentNumber: commentNumber,
       timestamp: serverTimestamp()
     });
     subjectInput.value = '';
