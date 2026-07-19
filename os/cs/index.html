@@ -121,8 +121,8 @@ const acctToggle = document.getElementById('acct-toggle');
   import {
     getAuth, signInAnonymously, onAuthStateChanged,
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    linkWithCredential, EmailAuthProvider, signOut, updateProfile,
-    setPersistence, browserLocalPersistence
+    linkWithCredential, EmailAuthProvider, signOut,
+    setPersistence, browserLocalPersistence, updateProfile
   } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
   import {
     getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
@@ -150,9 +150,19 @@ const acctToggle = document.getElementById('acct-toggle');
   const subjectInput = document.getElementById('wall-subject');
   const savedName = localStorage.getItem('wall-name');
   if (savedName) nameInput.value = savedName;
+
   nameInput.addEventListener('input', () => {
-  localStorage.setItem('wall-name', nameInput.value);
-});
+    localStorage.setItem('wall-name', nameInput.value);
+  });
+
+  nameInput.addEventListener('blur', () => {
+    if (auth.currentUser && !auth.currentUser.isAnonymous) {
+      const newName = nameInput.value.trim();
+      if (newName && newName !== auth.currentUser.displayName) {
+        updateProfile(auth.currentUser, { displayName: newName }).catch(err => console.error(err));
+      }
+    }
+  });
   const messageInput = document.getElementById('wall-message');
   const submitBtn = document.getElementById('wall-submit');
   const statusEl = document.getElementById('wall-status');
@@ -390,7 +400,10 @@ const acctToggle = document.getElementById('acct-toggle');
       } else {
         guestView.style.display = 'none';
         loggedinView.style.display = 'block';
-        emailDisplay.textContent = user.displayName || user.email;
+        emailDisplay.textContent = user.email;
+        if (user.displayName) {
+          nameInput.value = user.displayName;
+        }
       }
     } else {
       // no session at all (first-ever visit, or after logout) — start as guest
