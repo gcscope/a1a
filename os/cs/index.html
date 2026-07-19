@@ -172,12 +172,27 @@ const acctToggle = document.getElementById('acct-toggle');
     acctError.textContent = msg;
   }
 
+  const BANNED_NAMES = ["giancarlo scopazzi"];
+
+  function normalizeName(str) {
+    return str.trim().toLowerCase().replace(/[^a-z]/g, '');
+  }
+
+  function isNameBanned(name) {
+    const normalized = normalizeName(name);
+    return BANNED_NAMES.some(banned => normalizeName(banned) === normalized);
+  }
+
   document.getElementById('acct-signup-btn').addEventListener('click', async () => {
     showAcctError('');
     const email = signupEmail.value.trim();
     const password = signupPassword.value;
     if (!email || password.length < 6) {
       showAcctError('enter a valid email and a password of 6+ characters.');
+      return;
+    }
+    if (isNameBanned(email)) {
+      showAcctError('that name/username isn\'t available.');
       return;
     }
     try {
@@ -394,6 +409,11 @@ const acctToggle = document.getElementById('acct-toggle');
     }
     const message = messageInput.value.trim();
     const subject = subjectInput.value.trim();
+    const chosenName = nameInput.value.trim();
+    if (chosenName && isNameBanned(chosenName)) {
+      statusEl.textContent = "that name isn't available.";
+      return;
+    }
     if (!subject) {
       statusEl.textContent = "give it a subject.";
       return;
