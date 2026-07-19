@@ -228,14 +228,21 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-function nameToColor(name) {
+function stringToColor(str) {
   let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   const hue = Math.abs(hash) % 360;
   return 'hsl(' + hue + ', 65%, 55%)';
 }
+
+function renderFormattedText(str) {
+  let escaped = escapeHtml(str);
+  escaped = escaped.replace(/([^\s:]+):(\d+)/g, (match, name, num) => {
+    const color = stringToColor(name.toLowerCase() + ':' + num);
+    return '<a href="#comment-' + num + '" class="wall-reply-link" data-num="' + num + '" style="color:' + color + ';font-weight:bold">' + match + '</a>';
+  });
 
 function renderFormattedText(str) {
   let escaped = escapeHtml(str);
