@@ -76,6 +76,12 @@ this keeps your current posts, and lets you log back in on other devices.
   </div>
   <input id="wall-subject" type="text" maxlength="80" placeholder="subject">
   <textarea id="wall-message" maxlength="2000" placeholder="say something..."></textarea>
+  <div id="wall-toolbar">
+    <button type="button" class="fmt-btn" data-marker="**" title="Bold"><b>B</b></button>
+    <button type="button" class="fmt-btn" data-marker="*" title="Italic"><i>I</i></button>
+    <button type="button" class="fmt-btn" data-marker="__" title="Underline"><u>U</u></button>
+    <button type="button" class="fmt-btn" data-marker="~~" title="Strikethrough"><s>S</s></button>
+  </div>
   <button id="wall-submit">post</button>
   <div id="wall-status"></div>
 </div>
@@ -289,6 +295,34 @@ import {
     return div.innerHTML;
   }
 
+  function renderFormattedText(str) {
+    let escaped = escapeHtml(str);
+    escaped = escaped
+      .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+      .replace(/__(.+?)__/g, '<u>$1</u>')
+      .replace(/~~(.+?)~~/g, '<s>$1</s>')
+      .replace(/\*(.+?)\*/g, '<i>$1</i>');
+    return escaped;
+  }
+
+  function wrapSelection(textarea, marker) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const value = textarea.value;
+    const selected = value.slice(start, end) || 'text';
+    const newValue = value.slice(0, start) + marker + selected + marker + value.slice(end);
+    textarea.value = newValue;
+    textarea.focus();
+    textarea.selectionStart = start + marker.length;
+    textarea.selectionEnd = start + marker.length + selected.length;
+  }
+
+  document.querySelectorAll('#wall-toolbar .fmt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrapSelection(messageInput, btn.dataset.marker);
+    });
+  });
+
   function timeAgo(date) {
     if (!date) return '';
     const seconds = Math.floor((new Date() - date) / 1000);
@@ -333,7 +367,7 @@ import {
 
       const messageP = document.createElement('p');
       messageP.className = 'wall-post-text';
-      messageP.textContent = data.message;
+      messageP.innerHTML = renderFormattedText(data.message);
 
       el.appendChild(subjectP);
       el.appendChild(metaP);
@@ -373,6 +407,15 @@ import {
     subjectField.maxLength = 80;
     subjectField.value = data.subject || '';
 
+    const editToolbar = document.createElement('div');
+    editToolbar.id = 'wall-toolbar';
+    editToolbar.innerHTML = `
+    <button type="button" class="fmt-btn" data-marker="**" title="Bold"><b>B</b></button>
+    <button type="button" class="fmt-btn" data-marker="*" title="Italic"><i>I</i></button>
+    <button type="button" class="fmt-btn" data-marker="__" title="Underline"><u>U</u></button>
+    <button type="button" class="fmt-btn" data-marker="~~" title="Strikethrough"><s>S</s></button>
+    `;
+
     const messageField = document.createElement('textarea');
     messageField.maxLength = 2000;
     messageField.value = data.message || '';
@@ -394,7 +437,14 @@ import {
 
     wrap.appendChild(subjectField);
     wrap.appendChild(messageField);
+    wrap.appendChild(editToolbar);
     wrap.appendChild(actions);
+
+    editToolbar.querySelectorAll('.fmt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        wrapSelection(messageField, btn.dataset.marker);
+      });
+    });
     postEl.appendChild(wrap);
 
     saveBtn.addEventListener('click', async () => {
