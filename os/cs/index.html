@@ -40,9 +40,10 @@ posting as <b id="acct-guest-name">...</b> (guest, this browser only)
 <button class="acct-tab" data-tab="login">log in</button>
  </div>
 <div id="acct-signup-form" class="acct-form">
-<input id="acct-signup-email" type="email" placeholder="email">
-<input id="acct-signup-password" type="password" placeholder="password (6+ characters)">
-<button id="acct-signup-btn" class="acct-btn">create account</button>
+  <input id="acct-signup-name" type="text" maxlength="40" placeholder="username">
+  <input id="acct-signup-email" type="text" placeholder="username">
+  <input id="acct-signup-password" type="password" placeholder="password (6+ characters)">
+  <button id="acct-signup-btn" class="acct-btn">create account</button>
 <p class="acct-note">
 this keeps your current posts, and lets you log back in on other devices.
 </p>
@@ -225,6 +226,7 @@ import {
   const guestNameEl = document.getElementById('acct-guest-name');
   const emailDisplay = document.getElementById('acct-email-display');
   const acctError = document.getElementById('acct-error');
+  const signupName = document.getElementById('acct-signup-name');
   const signupEmail = document.getElementById('acct-signup-email');
   const signupPassword = document.getElementById('acct-signup-password');
   const loginEmail = document.getElementById('acct-login-email');
@@ -248,25 +250,40 @@ import {
 
   document.getElementById('acct-signup-btn').addEventListener('click', async () => {
     showAcctError('');
-    const email = signupEmail.value.trim();
+    const chosenName = signupName.value.trim();
+    const username = signupEmail.value.trim();
     const password = signupPassword.value;
-    if (!email || password.length < 6) {
-      showAcctError('enter a valid email and a password of 6+ characters.');
+    if (!chosenName) {
+      showAcctError('enter a name.');
       return;
     }
-    if (isNameBanned(email)) {
-      showAcctError('that name/username isn\'t available.');
+    if (isNameBanned(chosenName)) {
+      showAcctError('that username isn't available.');
       return;
     }
+    if (username.length < 3 || password.length < 6) {
+      showAcctError('username needs 3+ characters, password needs 6+.');
+      return;
+    }
+    const fakeEmail = usernameToEmail(username);
     try {
-      const credential = EmailAuthProvider.credential(email, password);
+      const credential = EmailAuthProvider.credential(fakeEmail, password);
+      let user;
       if (auth.currentUser && auth.currentUser.isAnonymous) {
-        await linkWithCredential(auth.currentUser, credential);
+        const result = await linkWithCredential(auth.currentUser, credential);
+        user = result.user;
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const result = await createUserWithEmailAndPassword(auth, fakeEmail, password);
+        user = result.user;
       }
+      await updateProfile(user, { displayName: chosenName });
+      saveCurrentName(chosenName);
     } catch (err) {
-      showAcctError(err.message.replace('Firebase: ', ''));
+      if (err.code === 'auth/email-already-in-use') {
+        showAcctError('that username is taken.');
+      } else {
+        showAcctError(err.message.replace('Firebase: ', ''));
+      }
     }
   });
 
@@ -521,7 +538,7 @@ import {
     const subject = subjectInput.value.trim();
     const chosenName = nameInput.value.trim();
     if (chosenName && isNameBanned(chosenName)) {
-      statusEl.textContent = "that name isn't available.";
+      statusEl.textContent = "that username isn't available.";
       return;
     }
     if (!subject) {
