@@ -55,16 +55,24 @@ this keeps your current posts, and lets you log back in on other devices.
 <p id="acct-error" class="acct-error"></p>
 </div>
 <div id="acct-loggedin-view" style="display:none;">
-<p class="acct-status">logged in as <b id="acct-email-display"></b></p>
-<button id="acct-logout-btn" class="acct-btn">log out</button>
-</div>
-</div>
+      <p class="acct-status">logged in as <b id="acct-email-display"></b></p>
+      <button id="acct-logout-btn" class="acct-btn">log out</button>
+    </div>
+
+    <div id="acct-settings-panel" style="display:none;">
+      <p class="acct-status">display name</p>
+      <input id="acct-name-input" type="text" maxlength="40" placeholder="name">
+      <button id="acct-name-save-btn" class="acct-btn">save</button>
+    </div>
+
+    <p id="acct-settings-link">settings</p>
+
+  </div>
 </div>
 <div id="wall-form">
   <div id="wall-form">
   <div id="wall-name-row">
-    <input id="wall-name" type="text" maxlength="40" placeholder="name" readonly class="locked">
-    <button id="wall-name-edit-btn" type="button" class="wall-btn">edit</button>
+    <input id="wall-name" type="text" placeholder="name" readonly class="locked">
   </div>
   <input id="wall-subject" type="text" maxlength="80" placeholder="subject">
   <textarea id="wall-message" maxlength="2000" placeholder="say something..."></textarea>
@@ -155,29 +163,31 @@ const acctToggle = document.getElementById('acct-toggle');
   const savedName = localStorage.getItem('wall-name');
   if (savedName) nameInput.value = savedName;
 
-  const nameEditBtn = document.getElementById('wall-name-edit-btn');
+  const settingsLink = document.getElementById('acct-settings-link');
+  const settingsPanel = document.getElementById('acct-settings-panel');
+  const acctNameInput = document.getElementById('acct-name-input');
+  const acctNameSaveBtn = document.getElementById('acct-name-save-btn');
 
-  function saveCurrentName() {
-    const newName = nameInput.value.trim();
+  settingsLink.addEventListener('click', () => {
+    const isOpen = settingsPanel.style.display === 'flex';
+    settingsPanel.style.display = isOpen ? 'none' : 'flex';
+    if (!isOpen) acctNameInput.value = nameInput.value;
+  });
+
+  function saveCurrentName(newName) {
+    nameInput.value = newName;
     localStorage.setItem('wall-name', newName);
     if (auth.currentUser && !auth.currentUser.isAnonymous && newName !== auth.currentUser.displayName) {
       updateProfile(auth.currentUser, { displayName: newName }).catch(err => console.error(err));
     }
+    if (auth.currentUser && auth.currentUser.isAnonymous) {
+      guestNameEl.textContent = newName || 'anonymous';
+    }
   }
 
-  nameEditBtn.addEventListener('click', () => {
-    const isLocked = nameInput.readOnly;
-    if (isLocked) {
-      nameInput.readOnly = false;
-      nameInput.classList.remove('locked');
-      nameInput.focus();
-      nameEditBtn.textContent = 'save';
-    } else {
-      nameInput.readOnly = true;
-      nameInput.classList.add('locked');
-      nameEditBtn.textContent = 'edit';
-      saveCurrentName();
-    }
+  acctNameSaveBtn.addEventListener('click', () => {
+    saveCurrentName(acctNameInput.value.trim());
+    settingsPanel.style.display = 'none';
   });
   const messageInput = document.getElementById('wall-message');
   const submitBtn = document.getElementById('wall-submit');
