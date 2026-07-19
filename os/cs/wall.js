@@ -53,12 +53,16 @@ async function backfillCommentNumbers() {
     next += 1;
     batch.update(doc(db, 'wall-posts', d.id), { commentNumber: next });
   });
-  await batch.commit();
-  await updateDoc(counterRef, { count: next }).catch(async () => {
-    await runTransaction(db, async (t) => { t.set(counterRef, { count: next }); });
-  });
-  alert('Backfilled ' + missing.length + ' comment(s) with numbers 1 through ' + next + '.');
-}
+  try {
+    await batch.commit();
+    await updateDoc(counterRef, { count: next }).catch(async () => {
+      await runTransaction(db, async (t) => { t.set(counterRef, { count: next }); });
+    });
+    alert('Backfilled ' + missing.length + ' comment(s) with numbers 1 through ' + next + '.');
+  } catch (err) {
+    console.error('backfill failed', err);
+    alert('Backfill failed: ' + err.message);
+  }
 
 await setPersistence(auth, browserLocalPersistence);
 
