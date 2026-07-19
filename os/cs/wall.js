@@ -242,14 +242,6 @@ function renderFormattedText(str) {
   escaped = escaped.replace(/([^\s:]+):(\d+)/g, (match, name, num) => {
     const color = stringToColor(name.toLowerCase() + ':' + num);
     return '<a href="#comment-' + num + '" class="wall-reply-link" data-num="' + num + '" style="color:' + color + ';font-weight:bold">' + match + '</a>';
-  });
-
-function renderFormattedText(str) {
-  let escaped = escapeHtml(str);
-  escaped = escaped.replace(/([^\s:]+):(\d+)/g, (match, name, num) => {
-    const color = nameToColor(name.toLowerCase());
-    return '<a href="#comment-' + num + '" class="wall-reply-link" data-num="' + num + '" style="color:' + color + '">' + match + '</a>';
-  });
   escaped = escaped
     .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
     .replace(/__(.+?)__/g, '<u>$1</u>')
