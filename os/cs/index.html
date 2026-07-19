@@ -136,9 +136,11 @@ const acctToggle = document.getElementById('acct-toggle');
     linkWithCredential, EmailAuthProvider, signOut,
     setPersistence, browserLocalPersistence, updateProfile
   } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-  import {
+  
+import {
     getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
-    query, orderBy, limit, onSnapshot, serverTimestamp
+    query, orderBy, limit, onSnapshot, serverTimestamp,
+    where, getDocs, writeBatch
   } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -158,6 +160,7 @@ const acctToggle = document.getElementById('acct-toggle');
 
   let currentUid = null;
 
+  const ADMIN_UID = "4pb0S6fy0thedwfadk15QzXRCas1";
   const nameInput = document.getElementById('wall-name');
   const subjectInput = document.getElementById('wall-subject');
   const savedName = localStorage.getItem('wall-name');
@@ -174,6 +177,22 @@ const acctToggle = document.getElementById('acct-toggle');
     if (!isOpen) acctNameInput.value = nameInput.value;
   });
 
+  async function renameExistingPosts(newName) {
+    if (!currentUid) return;
+    try {
+      const mineQuery = query(postsRef, where('authorUid', '==', currentUid));
+      const snap = await getDocs(mineQuery);
+      if (snap.empty) return;
+      const batch = writeBatch(db);
+      snap.forEach((docSnap) => {
+        batch.update(doc(db, 'wall-posts', docSnap.id), { name: newName });
+      });
+      await batch.commit();
+    } catch (err) {
+      console.error('failed to rename existing posts', err);
+    }
+  }
+
   function saveCurrentName(newName) {
     nameInput.value = newName;
     localStorage.setItem('wall-name', newName);
@@ -183,6 +202,7 @@ const acctToggle = document.getElementById('acct-toggle');
     if (auth.currentUser && auth.currentUser.isAnonymous) {
       guestNameEl.textContent = newName || 'anonymous';
     }
+    renameExistingPosts(newName);
   }
 
   acctNameSaveBtn.addEventListener('click', () => {
@@ -208,13 +228,14 @@ const acctToggle = document.getElementById('acct-toggle');
     acctError.textContent = msg;
   }
 
-  const BANNED_NAMES = ["giancarlo scopazzi"];
+  const BANNED_NAMES = ["giancarlo scopazzi", "gcscope"];
 
   function normalizeName(str) {
     return str.trim().toLowerCase().replace(/[^a-z]/g, '');
   }
 
   function isNameBanned(name) {
+    if (currentUid === ADMIN_UID) return false;
     const normalized = normalizeName(name);
     return BANNED_NAMES.some(banned => normalizeName(banned) === normalized);
   }
