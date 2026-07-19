@@ -236,12 +236,12 @@ function stringToColor(str) {
   const hue = Math.abs(hash) % 360;
   return 'hsl(' + hue + ', 65%, 55%)';
 }
-
 function renderFormattedText(str) {
   let escaped = escapeHtml(str);
   escaped = escaped.replace(/([^\s:]+):(\d+)/g, (match, name, num) => {
     const color = stringToColor(name.toLowerCase() + ':' + num);
     return '<a href="#comment-' + num + '" class="wall-reply-link" data-num="' + num + '" style="color:' + color + ';font-weight:bold">' + match + '</a>';
+  });
   escaped = escaped
     .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
     .replace(/__(.+?)__/g, '<u>$1</u>')
@@ -249,7 +249,6 @@ function renderFormattedText(str) {
     .replace(/\*(.+?)\*/g, '<i>$1</i>');
   return escaped;
 }
-
 function wrapSelection(textarea, marker) {
   const start = textarea.selectionStart;
   const end = textarea.selectionEnd;
