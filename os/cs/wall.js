@@ -331,11 +331,7 @@ function renderPosts(snapshot) {
     replyBtn.className = 'wall-btn';
     replyBtn.textContent = 'reply';
     replyBtn.addEventListener('click', () => {
-      if (data.commentNumber) {
-        insertReplyText((data.name || 'anonymous') + ':' + data.commentNumber + ' ');
-      } else {
-        insertReplyText('@' + (data.name || 'anonymous') + ' ');
-      }
+      insertReplyText((data.name || 'anonymous') + ':' + (data.commentNumber || '?') + ' ');
     });
     replyRow.appendChild(replyBtn);
     el.appendChild(replyRow);
