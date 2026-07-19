@@ -37,6 +37,29 @@ async function getNextCommentNumber() {
   });
 }
 
+async function backfillCommentNumbers() {
+  const allQuery = query(postsRef, orderBy('timestamp', 'asc'));
+  const snap = await getDocs(allQuery);
+  const missing = snap.docs.filter(d => !d.data().commentNumber);
+  if (missing.length === 0) {
+    alert('Nothing to backfill — every comment already has a number.');
+    return;
+  }
+  const counterSnap = await getDocs(query(postsRef, orderBy('commentNumber', 'desc'), limit(1)));
+  let next = counterSnap.empty ? 0 : (counterSnap.docs[0].data().commentNumber || 0);
+
+  const batch = writeBatch(db);
+  missing.forEach(d => {
+    next += 1;
+    batch.update(doc(db, 'wall-posts', d.id), { commentNumber: next });
+  });
+  await batch.commit();
+  await updateDoc(counterRef, { count: next }).catch(async () => {
+    await runTransaction(db, async (t) => { t.set(counterRef, { count: next }); });
+  });
+  alert('Backfilled ' + missing.length + ' comment(s) with numbers 1 through ' + next + '.');
+}
+
 await setPersistence(auth, browserLocalPersistence);
 
 let currentUid = null;
@@ -181,6 +204,19 @@ document.getElementById('acct-logout-btn').addEventListener('click', async () =>
   await signInAnonymously(auth);
 });
 
+if (ADMIN_UID) {
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.uid === ADMIN_UID) {
+      const backfillBtn = document.createElement('button');
+      backfillBtn.className = 'acct-btn';
+      backfillBtn.textContent = 'backfill comment numbers';
+      backfillBtn.style.marginTop = '8px';
+      backfillBtn.addEventListener('click', backfillCommentNumbers);
+      loggedinView.appendChild(backfillBtn);
+    }
+  });
+}
+
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
@@ -281,7 +317,7 @@ function renderPosts(snapshot) {
     nameSpan.className = 'wall-post-name';
     nameSpan.textContent = data.name || 'anonymous';
     metaP.appendChild(nameSpan);
-    metaP.append(' — ' + timeAgo(time) + (data.editedAt ? ' (edited)' : '') + (data.commentNumber ? ' — #' + data.commentNumber : ''));
+    metaP.append(' — ' + timeAgo(time) + (data.editedAt ? ' (edited)' : ''));
     const messageP = document.createElement('p');
     messageP.className = 'wall-post-text';
     messageP.innerHTML = renderFormattedText(data.message);
