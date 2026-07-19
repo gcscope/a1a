@@ -61,7 +61,11 @@ this keeps your current posts, and lets you log back in on other devices.
 </div>
 </div>
 <div id="wall-form">
-  <input id="wall-name" type="text" maxlength="40" placeholder="name">
+  <div id="wall-form">
+  <div id="wall-name-row">
+    <input id="wall-name" type="text" maxlength="40" placeholder="name" readonly class="locked">
+    <button id="wall-name-edit-btn" type="button" class="wall-btn">edit</button>
+  </div>
   <input id="wall-subject" type="text" maxlength="80" placeholder="subject">
   <textarea id="wall-message" maxlength="2000" placeholder="say something..."></textarea>
   <button id="wall-submit">post</button>
@@ -151,16 +155,28 @@ const acctToggle = document.getElementById('acct-toggle');
   const savedName = localStorage.getItem('wall-name');
   if (savedName) nameInput.value = savedName;
 
-  nameInput.addEventListener('input', () => {
-    localStorage.setItem('wall-name', nameInput.value);
-  });
+  const nameEditBtn = document.getElementById('wall-name-edit-btn');
 
-  nameInput.addEventListener('blur', () => {
-    if (auth.currentUser && !auth.currentUser.isAnonymous) {
-      const newName = nameInput.value.trim();
-      if (newName && newName !== auth.currentUser.displayName) {
-        updateProfile(auth.currentUser, { displayName: newName }).catch(err => console.error(err));
-      }
+  function saveCurrentName() {
+    const newName = nameInput.value.trim();
+    localStorage.setItem('wall-name', newName);
+    if (auth.currentUser && !auth.currentUser.isAnonymous && newName !== auth.currentUser.displayName) {
+      updateProfile(auth.currentUser, { displayName: newName }).catch(err => console.error(err));
+    }
+  }
+
+  nameEditBtn.addEventListener('click', () => {
+    const isLocked = nameInput.readOnly;
+    if (isLocked) {
+      nameInput.readOnly = false;
+      nameInput.classList.remove('locked');
+      nameInput.focus();
+      nameEditBtn.textContent = 'save';
+    } else {
+      nameInput.readOnly = true;
+      nameInput.classList.add('locked');
+      nameEditBtn.textContent = 'edit';
+      saveCurrentName();
     }
   });
   const messageInput = document.getElementById('wall-message');
