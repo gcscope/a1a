@@ -63,6 +63,7 @@ async function backfillCommentNumbers() {
     console.error('backfill failed', err);
     alert('Backfill failed: ' + err.message);
   }
+}
 
 await setPersistence(auth, browserLocalPersistence);
 
