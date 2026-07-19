@@ -166,10 +166,10 @@ h1 { margin: 0; }
 }
 
 .wall-reply-link {
-	color: rgb(255, 170, 0);
-	text-decoration: underline;
+	color: inherit;
+	text-decoration: none;
 	cursor: pointer;
-	font-weight: bold;
+	font-weight: normal;
 }
 
 .wall-post.wall-highlight {
