@@ -19,7 +19,7 @@ body {
 
 .title {
 	font-size: 23pt;
-	font-family: "Verdana";
+	font-family: Verdana, "DejaVu Sans";
 	color: rgb(255, 255, 255);
 	text-decoration: none;
 	text-align: center;
@@ -47,7 +47,7 @@ h1 { margin: 0; }
 	margin-bottom: 10px;
 	margin-top: 10px;
 	border-radius: 5px;
-	font-family: Verdana, Tahoma, sans-serif !important;
+	font-family: Verdana, "DejaVu Sans", Tahoma, sans-serif !important;
 	-webkit-appearance: none;
 	appearance: none;
 	padding: 3px 8px;
@@ -65,7 +65,7 @@ h1 { margin: 0; }
 	padding-bottom: 1px;
 	margin: auto;
 	max-width: 990px;
-	font-family: Tahoma, Verdana, sans-serif;
+	font-family: Tahoma, Verdana, "DejaVu Sans", sans-serif;
 }
 
 .buttons {
@@ -87,7 +87,7 @@ h1 { margin: 0; }
 	gap: 2px;
 }
 
-.input { font-size: 13.5pt; font-family: Tahoma, Verdana; }
+.input { font-size: 13.5pt; font-family: Tahoma, Verdana, "DejaVu Sans"; }
 
 .webtitle { text-decoration: none; color: rgb(255, 255, 255); }
 .webtitle:hover { color: rgb(255, 170, 0); }
@@ -98,12 +98,12 @@ h1 { margin: 0; }
 .latest {
 	background-color: rgb(215, 215, 215);
 	padding: 5px;
-	font-family: Tahoma, Verdana, sans-serif;
+	font-family: Tahoma, Verdana, "DejaVu Sans", sans-serif;
 }
 
 .latest-text { margin-left: 5px; margin-top: 5px; }
 
-.main { font-family: Tahoma, Verdana, sans-serif; }
+.main { font-family: Tahoma, Verdana, "DejaVu Sans", sans-serif; }
 
 .titlecolour { color: rgb(255, 170, 0); }
 
@@ -197,7 +197,7 @@ h1 { margin: 0; }
 }
 
 #wall-name, #wall-subject {
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans" sans-serif;
 	font-size: 11pt;
 	padding: 6px 10px;
 	border: 1px solid rgb(140, 140, 140);
@@ -206,7 +206,7 @@ h1 { margin: 0; }
 }
 
 #wall-message {
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 	font-size: 11pt;
 	padding: 8px 10px;
 	border: 1px solid rgb(140, 140, 140);
@@ -217,7 +217,7 @@ h1 { margin: 0; }
 
 #wall-submit, .wall-btn {
 	font-size: 12pt;
-	font-family: Verdana, Tahoma, sans-serif !important;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif !important;
 	padding: 6px 16px;
 	border-radius: 5px;
 	border: 1px solid rgb(140, 140, 140);
@@ -306,7 +306,7 @@ h1 { margin: 0; }
 }
 
 .fmt-btn {
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 	font-size: 11pt;
 	width: 30px;
 	height: 28px;
@@ -328,7 +328,7 @@ h1 { margin: 0; }
 .wall-post-text s { text-decoration: line-through; }
 
 .fmt-btn {
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 	font-size: 11pt;
 	width: 30px;
 	height: 28px;
@@ -351,13 +351,13 @@ h1 { margin: 0; }
 	display: inline-block;
 	margin-top: 12px;
 	margin-bottom: 0;
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 }
 
 #acct-toggle {
 	font-size: 13pt;
 	border-radius: 5px;
-	font-family: Verdana, Tahoma, sans-serif !important;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif !important;
 	-webkit-appearance: none;
 	appearance: none;
 	padding: 3px 8px;
@@ -409,7 +409,7 @@ h1 { margin: 0; }
 	background: rgb(40, 40, 40);
 	color: rgb(200, 200, 200);
 	cursor: pointer;
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 }
 
 .acct-tab.active {
@@ -425,7 +425,7 @@ h1 { margin: 0; }
 }
 
 .acct-form input {
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 	font-size: 10pt;
 	padding: 6px 8px;
 	border: 1px solid rgb(90, 90, 90);
@@ -436,7 +436,7 @@ h1 { margin: 0; }
 
 .acct-btn {
 	font-size: 10pt;
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 	padding: 6px 10px;
 	border-radius: 5px;
 	border: 1px solid rgb(140, 140, 140);
@@ -467,7 +467,7 @@ h1 { margin: 0; }
 #wall-name-row #wall-name {
 	width: 100%;
 	box-sizing: border-box;
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 	font-size: 11pt;
 	padding: 8px 10px;
 	border: 1px solid rgb(140, 140, 140);
@@ -503,7 +503,7 @@ h1 { margin: 0; }
 }
 
 #acct-settings-panel input {
-	font-family: Verdana, Tahoma, sans-serif;
+	font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
 	font-size: 10pt;
 	padding: 6px 8px;
 	border: 1px solid rgb(90, 90, 90);
@@ -676,4 +676,32 @@ h1 { margin: 0; }
 		width: min(280px, calc(100vw - 40px));
 	}
 
+}
+
+@font-face {
+	font-family: "DejaVu Sans";
+	src: url("fonts/DejaVuSans.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "DejaVu Sans";
+	src: url("fonts/DejaVuSans-Bold.ttf") format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "DejaVu Sans";
+	src: url("fonts/DejaVuSans-Oblique.ttf") format("truetype");
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "DejaVu Sans";
+	src: url("fonts/DejaVuSans-BoldOblique.ttf") format("truetype");
+	font-weight: bold;
+	font-style: italic;
 }
