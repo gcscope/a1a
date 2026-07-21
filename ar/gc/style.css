@@ -17,3 +17,8 @@ h3{font-family: tahoma, verdana, helvetica;}
 h4{font-family: tahoma, verdana, helvetica;}
 h5{font-family: tahoma, verdana, helvetica;}
 h6{font-family: tahoma, verdana, helvetica;}
+
+@media (max-width: 500px) {
+    #a1a-arc-toggle { height: 56px !important; padding: 0 22px !important; font-size: 24pt !important; }
+    #a1a-arc-panel { top: 66px !important; width: 220px !important; padding: 16px !important; }
+  }

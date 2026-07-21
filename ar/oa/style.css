@@ -1,1 +1,6 @@
 body {font-family: Verdana;}
+
+@media (max-width: 500px) {
+    #a1a-arc-toggle { height: 56px !important; padding: 0 22px !important; font-size: 24pt !important; }
+    #a1a-arc-panel { top: 66px !important; width: 220px !important; padding: 16px !important; }
+  }
