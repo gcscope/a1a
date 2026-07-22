@@ -123,6 +123,12 @@ h1 { margin: 0; }
 	background: linear-gradient(rgb(40, 40, 40), rgb(23, 23, 23));
 }
 
+.bloglist img {
+		width: 100% !important;
+		height: auto !important;
+		display: block;
+	}
+
 
 .bloglist p {
 	margin: 0;
@@ -640,7 +646,7 @@ h1 { margin: 0; }
 	}
 
 	.bloglist img.arc {
-		max-width: 100% !important;
+		width: 100% !important;
 		height: auto !important;
 		display: block;
 	}
