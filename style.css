@@ -164,6 +164,10 @@ h1 { margin: 0; }
   align-items: flex-start;
 }
 
+.indeximg {
+	max-width: 95%;
+}
+
 .kofi-shrink {
 	transform: scale(0.95);
 	transform-origin: left center;
@@ -642,7 +646,7 @@ h1 { margin: 0; }
 
 	.bloglist {
 		max-width: 100%;
-		font-size: 12pt;
+		font-size: 16pt;
 	}
 
 	.bloglist img.arc {

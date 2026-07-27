@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>working on rantstuff.com - a1a.ca</title>
+<meta charset="UTF-8">
+<meta name="description" content="a1a.ca - I describe my progress on rantstuff.com">
+<meta name="keywords" content="a1a, A1A, Scopazzi">
+<meta name="author" content="Giancarlo Scopazzi">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="images/favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="title">
+<h1><a class="webtitle" href="../blog.html">blog <span style="color: rgb(255, 170, 0);">7</span></a></h1>
+</div>
+</div>
+<div class="buttons">
+  <button class="links" onclick="location.href='../index.html'">home</button>
+  <button class="links" onclick="location.href='../blog.html'">go back</button>
+  <button class="links" id="themeToggle">dark mode</button>
+</div>
+<div class="main">
+<div class="stuff">
+<h1 style="margin-top: 5px;">working on rantstuff.com</h1>
+<p><b>07/26/2026</b></p>
+<p>
+Yesterday was my site's one month anniversary. I didn't post anything for it, but I have been writing this blog for a few days, and doing other stuff.
+</p>
+<p>
+I've been working on rantstuff.com for the last week, and I've gotten a lot done so far. Although rantstuff uses the <b>a1a framework</b>, I've taken rantstuff.com on a whole different route compared to a1a. For starters, I purchased my first web server, a VPS on DigitalOcean. In the last blog, I mentioned myself wanting to <b>self-host</b> the site, but the more I thought about it, the more I realized it wasn't the best idea short and long term. With a vps, I can still do the things I would've been able to do on a self-hosted server, but for a lot cheaper. The server i currently have is $6 a month, If I bought a mini pc for the server, I would've put over $100 down on something I haven't even started yet. And what if rantstuff doesn't do well? That would be wasted money. At least the vps is 6 bucks a month. So if I decide to cancel the server after a few months, I will have saved money long term.
+</p>
+<h4>DESIGNING THE SITE</h4>
+<p>
+I used photoshop to design the site, It only took me about an hour to come up with the design. I then put it into Claude and asked it to recreate what I had in the image, but it looked like shit, so I duplicated the a1a index page and used that as a framework. I would ask Claude to move text or add things, and I would alter them manually based off of my designs. This method has been the most efficient for me, as I'm 70% done with the site.  
+</p>
+<p>
+Since this is on a vps, instead of using Firebase for the online part, It's coded entierly with <b>PHP</b>. I don't know a single line of PHP, so using Claude saved me a bunch of time. It also helped me set up the email service, setting up the oauth client, and turnstile. I'm gonna try to get the site released this week and you will be able to acces it by visiting <b>rantstuff.com</b>, or on the <b>other stuff page</b>.
+</p>
+<p style="font-size: 10pt;"><b>PHILLIPIANS 4:13</b></p>
+</div>
+</div>
+</div>
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
