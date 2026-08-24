@@ -34,7 +34,13 @@
 <button class="links" onclick="location.href='ar/'">archive</button>
 <button class="links" onclick="location.href='os/'">other stuff</button>
 <button class="links" id="themeToggle">light mode</button>
+<span id="admin-dot" style="cursor: pointer; opacity: 0.2; padding: 4px 6px; user-select: none;">·</span>
 </nav>
+<div id="admin-login" style="display: none; gap: 5px; flex-wrap: wrap; margin-bottom: 10px;">
+  <input id="admin-email" type="email" placeholder="email" autocomplete="username" style="font-family: 'SiteFont', Tahoma, sans-serif; padding: 4px 8px; border-radius: 5px; border: solid 2px rgb(33, 33, 33);">
+  <input id="admin-pass" type="password" placeholder="password" autocomplete="current-password" style="font-family: 'SiteFont', Tahoma, sans-serif; padding: 4px 8px; border-radius: 5px; border: solid 2px rgb(33, 33, 33);">
+  <button class="links" id="admin-signin" style="margin: 0;">sign in</button>
+</div>
 </div>
 </div>
 <div class="main">
@@ -48,8 +54,9 @@
 <p><a class="i" href="blogs/blog4.html"><b>a1a.ca</b></a></p>
 <p><a class="i" href="blogs/blog5.html"><b>archive</b></a></p>
 <p><a class="i" href="blogs/blog6.html"><b>other stuff completed</b></a></p>
-<p><a class="i" href="blogs/blog7.html"><b>working on rantstuff.com</b></a></p
-</div> 
+<p><a class="i" href="blogs/blog7.html"><b>working on rantstuff.com</b></a></p>
+<!--BLOGLIST END-->
+</div>
 </div>
 </div>
 </div>
@@ -76,6 +83,53 @@
 
   btn.addEventListener('click', () => {
     setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+<script type="module">
+  // Admin detection: if the signed-in Firebase user (same session as the
+  // comment wall) is the site owner, show the create-blog button. Firebase is
+  // only used for login here — publishing itself goes through GitHub, which
+  // is the real access control.
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence,
+    signInWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+  import { firebaseConfig, ADMIN_UID } from "./firebase-config.js";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  await setPersistence(auth, browserLocalPersistence);
+
+  const loginBox = document.getElementById('admin-login');
+
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.uid === ADMIN_UID && !document.getElementById('createBlog')) {
+      loginBox.style.display = 'none';
+      const create = document.createElement('button');
+      create.className = 'links';
+      create.id = 'createBlog';
+      create.textContent = 'create blog';
+      create.addEventListener('click', () => location.href = 'blogs/editor.html');
+      document.getElementById('themeToggle').before(create);
+    }
+  });
+
+  // Unobtrusive fallback login for a fresh browser (normally the wall's
+  // session on os/cs is picked up automatically, since it's the same origin).
+  document.getElementById('admin-dot').addEventListener('click', () => {
+    loginBox.style.display = loginBox.style.display === 'flex' ? 'none' : 'flex';
+  });
+  document.getElementById('admin-signin').addEventListener('click', async () => {
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        document.getElementById('admin-email').value.trim(),
+        document.getElementById('admin-pass').value
+      );
+    } catch (err) {
+      console.error('sign-in failed', err);
+    }
   });
 </script>
 </body>

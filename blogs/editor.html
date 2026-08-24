@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>blog editor - a1a.ca</title>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="author" content="Giancarlo Scopazzi">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../images/favicon.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+#editor-wrap { display: none; }
+#editor-title {
+	width: 100%;
+	box-sizing: border-box;
+	font-family: "SiteFont", Tahoma, sans-serif;
+	font-size: 20pt;
+	font-weight: bold;
+	padding: 6px 8px;
+	margin-top: 8px;
+	border: solid 2px rgb(33, 33, 33);
+	border-radius: 5px;
+	background-color: rgb(255, 255, 255);
+	color: rgb(23, 23, 23);
+}
+#editor-toolbar {
+	margin: 10px 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	align-items: center;
+}
+.ed-btn, #editor-fontsize {
+	font-family: "SiteFont", Tahoma, sans-serif;
+	font-size: 11pt;
+	padding: 4px 10px;
+	border: solid 2px rgb(33, 33, 33);
+	border-radius: 5px;
+	background-color: rgb(255, 255, 255);
+	color: rgb(23, 23, 23);
+	cursor: pointer;
+}
+.ed-btn:hover {
+	background-color: rgb(255, 170, 0);
+	color: rgb(255, 255, 255);
+}
+#editor-body {
+	min-height: 300px;
+	border: solid 2px rgb(33, 33, 33);
+	border-radius: 5px;
+	outline: none;
+	margin-bottom: 10px;
+}
+#editor-body img { max-width: 100%; height: auto; }
+#publish-log {
+	font-size: 10pt;
+	white-space: pre-line;
+	margin-bottom: 10px;
+}
+[data-theme="dark"] #editor-title,
+[data-theme="dark"] .ed-btn,
+[data-theme="dark"] #editor-fontsize {
+	background-color: rgb(33, 33, 33);
+	color: rgb(220, 220, 220);
+	border-color: rgb(90, 90, 90);
+}
+[data-theme="dark"] .ed-btn:hover {
+	background-color: rgb(255, 170, 0);
+	color: rgb(255, 255, 255);
+}
+[data-theme="dark"] #editor-body { border-color: rgb(90, 90, 90); }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="title">
+<h1><a class="webtitle" href="../blog.html">blog <span style="color: rgb(255, 170, 0);">editor</span></a></h1>
+</div>
+<div class="buttons">
+  <button class="links" onclick="location.href='../index.html'">home</button>
+  <button class="links" onclick="location.href='../blog.html'">go back</button>
+  <button class="links" id="themeToggle">dark mode</button>
+</div>
+<div class="main">
+<div class="stuff">
+<p id="editor-status"><b>Checking admin access…</b></p>
+<div id="editor-wrap">
+<input id="editor-title" type="text" placeholder="Post title" autocomplete="off">
+<div id="editor-toolbar">
+  <button class="ed-btn" type="button" data-block="p" title="Paragraph">P</button>
+  <button class="ed-btn" type="button" data-block="h2" title="Header 2">H2</button>
+  <button class="ed-btn" type="button" data-block="h3" title="Header 3">H3</button>
+  <button class="ed-btn" type="button" data-block="h4" title="Header 4">H4</button>
+  <select id="editor-fontsize" title="Font size">
+    <option value="">font size</option>
+    <option value="10">small (10pt)</option>
+    <option value="13.5">normal (13.5pt)</option>
+    <option value="18">large (18pt)</option>
+    <option value="24">x-large (24pt)</option>
+  </select>
+  <button class="ed-btn" type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+  <button class="ed-btn" type="button" data-cmd="italic" title="Italic"><i>I</i></button>
+  <button class="ed-btn" type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+  <button class="ed-btn" type="button" id="ed-image" title="Insert image">image</button>
+  <button class="ed-btn" type="button" data-cmd="undo" title="Undo">undo</button>
+  <button class="ed-btn" type="button" data-cmd="redo" title="Redo">redo</button>
+  <input id="ed-image-file" type="file" accept="image/*" style="display: none;">
+</div>
+<div id="editor-body" class="stuff" contenteditable="true"><p><br></p></div>
+<div id="publish-log"></div>
+<button class="links" id="ed-publish">publish</button>
+<button class="links" onclick="location.href='../blog.html'">cancel</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+<script type="module" src="editor.js"></script>
+</body>
+</html>
