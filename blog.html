@@ -110,8 +110,9 @@
       create.className = 'links';
       create.id = 'createBlog';
       create.textContent = 'create blog';
+      create.style.marginTop = '8px';
       create.addEventListener('click', () => location.href = 'blogs/editor.html');
-      document.getElementById('themeToggle').before(create);
+      document.querySelector('.stuff').prepend(create);
     }
   });
 

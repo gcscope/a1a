@@ -76,10 +76,20 @@ fontSel.addEventListener("change", () => {
   bodyEl.focus();
   document.execCommand("fontSize", false, "7");
   bodyEl.querySelectorAll('font[size="7"]').forEach((f) => {
-    const span = document.createElement("span");
-    span.style.fontSize = pt + "pt";
-    while (f.firstChild) span.appendChild(f.firstChild);
-    f.replaceWith(span);
+    if (pt === "reset") {
+      // "normal" = the site default (.stuff sets no size, so 12pt/16px):
+      // unwrap entirely instead of adding a span, matching existing posts.
+      f.replaceWith(...f.childNodes);
+    } else {
+      const span = document.createElement("span");
+      span.style.fontSize = pt + "pt";
+      while (f.firstChild) span.appendChild(f.firstChild);
+      f.replaceWith(span);
+    }
+  });
+  // drop any size spans left empty by the restructuring above
+  bodyEl.querySelectorAll("span[style*='font-size']").forEach((s) => {
+    if (!s.textContent.trim() && !s.querySelector("img")) s.remove();
   });
 });
 
