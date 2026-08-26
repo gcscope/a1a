@@ -30,7 +30,7 @@
 	gap: 5px;
 	align-items: center;
 }
-.ed-btn, #editor-fontsize {
+.ed-btn, #editor-fontsize, #draft-list {
 	font-family: "SiteFont", Tahoma, sans-serif;
 	font-size: 11pt;
 	padding: 4px 10px;
@@ -59,7 +59,8 @@
 }
 [data-theme="dark"] #editor-title,
 [data-theme="dark"] .ed-btn,
-[data-theme="dark"] #editor-fontsize {
+[data-theme="dark"] #editor-fontsize,
+[data-theme="dark"] #draft-list {
 	background-color: rgb(33, 33, 33);
 	color: rgb(220, 220, 220);
 	border-color: rgb(90, 90, 90);
@@ -108,8 +109,15 @@
   <input id="ed-image-file" type="file" accept="image/*" style="display: none;">
 </div>
 <div id="editor-body" class="stuff" contenteditable="true"><p><br></p></div>
+<div id="draft-bar" style="display: none; gap: 5px; align-items: center; flex-wrap: wrap; margin-bottom: 10px;">
+  <span style="font-size: 10pt;"><b>drafts:</b></span>
+  <select id="draft-list"></select>
+  <button class="ed-btn" type="button" id="draft-load">load</button>
+  <button class="ed-btn" type="button" id="draft-delete">delete</button>
+</div>
 <div id="publish-log"></div>
 <button class="links" id="ed-publish">publish</button>
+<button class="links" id="ed-savedraft">save draft</button>
 <button class="links" onclick="location.href='../blog.html'">cancel</button>
 </div>
 </div>

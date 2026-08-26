@@ -128,6 +128,79 @@ imageInput.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
+// ---------- drafts ----------
+// Saved to this browser's localStorage, NOT the repo — the repo is public and
+// served live on a1a.ca, so drafts there wouldn't be private.
+
+const DRAFTS_KEY = "a1a_blog_drafts";
+const draftBar = document.getElementById("draft-bar");
+const draftList = document.getElementById("draft-list");
+
+function readDrafts() {
+  try { return JSON.parse(localStorage.getItem(DRAFTS_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function writeDrafts(drafts) {
+  localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
+}
+
+function refreshDraftBar() {
+  const drafts = readDrafts();
+  const names = Object.keys(drafts).sort((a, b) => drafts[b].savedAt - drafts[a].savedAt);
+  draftList.innerHTML = "";
+  names.forEach((name) => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = `${name} (${new Date(drafts[name].savedAt).toLocaleDateString()})`;
+    draftList.appendChild(opt);
+  });
+  draftBar.style.display = names.length ? "flex" : "none";
+}
+
+document.getElementById("ed-savedraft").addEventListener("click", () => {
+  const name = titleEl.value.trim() || window.prompt("Name this draft:", "untitled");
+  if (!name) return;
+  const drafts = readDrafts();
+  drafts[name] = {
+    title: titleEl.value,
+    html: bodyEl.innerHTML,
+    images: pendingImages,
+    savedAt: Date.now()
+  };
+  try {
+    writeDrafts(drafts);
+    logEl.textContent = `Draft "${name}" saved.\n`;
+    refreshDraftBar();
+  } catch (e) {
+    // images are stored as base64 inside the draft, so big ones can blow
+    // localStorage's ~5MB quota
+    logEl.textContent = `Couldn't save draft (probably too many/large images for browser storage): ${e.message}\n`;
+  }
+});
+
+document.getElementById("draft-load").addEventListener("click", () => {
+  const entry = readDrafts()[draftList.value];
+  if (!entry) return;
+  titleEl.value = entry.title;
+  bodyEl.innerHTML = entry.html;
+  pendingImages.length = 0;
+  pendingImages.push(...(entry.images || []));
+  logEl.textContent = `Draft "${draftList.value}" loaded.\n`;
+});
+
+document.getElementById("draft-delete").addEventListener("click", () => {
+  const name = draftList.value;
+  if (!name || !window.confirm(`Delete draft "${name}"?`)) return;
+  const drafts = readDrafts();
+  delete drafts[name];
+  writeDrafts(drafts);
+  refreshDraftBar();
+  logEl.textContent = `Draft "${name}" deleted.\n`;
+});
+
+refreshDraftBar();
+
 // ---------- serialization ----------
 
 function escapeHtml(s) {
@@ -346,6 +419,13 @@ ${metaSnippet}<span style="color: lightgrey;">...</span> <a style="font-size: 10
       message: `Update latest blog teaser to blog ${n}`,
       sha: indexFile.sha
     });
+
+    const drafts = readDrafts();
+    if (drafts[title]) {
+      delete drafts[title];
+      writeDrafts(drafts);
+      refreshDraftBar();
+    }
 
     log(`\nPublished! blog ${n} will be live at https://a1a.ca/blogs/blog${n}.html in about a minute.`);
   } catch (err) {
