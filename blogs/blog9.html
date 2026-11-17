@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>It's been a minute - a1a.ca</title>
+<meta charset="UTF-8">
+<meta name="description" content="a1a.ca - It's been 3 months since my last blog post, I have been focusing on other things that I'm working on (like making music and vibecoding an audio">
+<meta name="keywords" content="a1a, A1A, Scopazzi">
+<meta name="author" content="Giancarlo Scopazzi">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="../images/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="images/favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://a1a.ca/blogs/blog9.html">
+<meta property="og:title" content="It's been a minute - a1a.ca">
+<meta property="og:description" content="It's been 3 months since my last blog post, I have been focusing on other things that I'm working on (like making music and vibecoding an audio">
+<meta property="og:image" content="https://a1a.ca/images/og-image.png">
+<meta property="og:url" content="https://a1a.ca/blogs/blog9.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="It's been a minute - a1a.ca">
+<meta name="twitter:description" content="It's been 3 months since my last blog post, I have been focusing on other things that I'm working on (like making music and vibecoding an audio">
+<meta name="twitter:image" content="https://a1a.ca/images/og-image.png">
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="title">
+<h1><a class="webtitle" href="../blog.html">blog <span style="color: rgb(255, 170, 0);">9</span></a></h1>
+</div>
+<div class="buttons">
+  <button class="links" onclick="location.href='../index.html'">home</button>
+  <button class="links" onclick="location.href='../blog.html'">go back</button>
+  <button class="links" id="themeToggle">dark mode</button>
+</div>
+<div class="main">
+<div class="stuff">
+<h1 style="margin-top: 5px;">It's been a minute</h1>
+<p><b>11/17/2026</b></p>
+
+<p>It's been 3 months since my last blog post, I have been focusing on other things that I'm working on (like making music and vibecoding an audio plugin) and things have been going on in my life.&nbsp;</p><h4>BAPTISM</h4><p>I got baptized on Sunday at a Catholic Church. This has been a three year long "journey" ever since I found out I wasn't baptized. But the thing that's been bugging me is that I only took the RCIA course for a month before baptism. I looked it up and it usually takes 6-9 months to complete. I go to a Catholic school and I waited 6 months for them to start RCIA, but I feel like I was rushed into it. I'll talk more about this in another blog post.</p><h4>AUNT</h4><p>My aunt Cheryl died recently. She was sick for a bit (apparently has the same symptoms I had when I was sick) and she didn't want to go to the hospital, my uncle Ed took her anyways because she was getting worse, she went into cardiac arrest in the hospital and they put her on a ventilator on life support. When I went to the hospital my parents didn't want me going to see her, but I said I wanted to. They kept trying to push me away from seeing her, telling me things like "she has holes all over her from the tubes from IV" and "She wouldn't want you up there" but I was the only one that didn't cry up there, and my uncle was glad that I came and saw her. She passed away two days later and I went to the wake and funeral. At the wake they put her in an urn. If you opened the urn there was just a black box (that's where the ashes were) and people are saying goodbye, and I'm thinking you're saying goodbye to ashes, Cheryl is gone. She is in Heaven (probably) so why are you saying goodbye, shes not around to see it. It feels wrong to think this way but that's what I was thinking.</p><h4>PROVINCIALS</h4><p>I went to the provincials in Brampton in mid-October and I got Bronze, when I say that to people they congratulate me, but if you know, you know. I got a bye into the semis and lost by decision, I was going against a guy with power and I respected his power too much and I shouldn't have held back as much as I did.</p><p><br></p><h4>AUDIO PLUGIN</h4><p>I am making an audio plugin that loops gifs relative to tempo. It is going smoothly. I am vibecoding the entire thing but I am making it similar to how I made rantstuff.com, photoshop then Claude.</p><p><br></p><p>That is everything I've been doing, I kept it short, and I will make a more detailed blog soon.</p>
+
+</div>
+</div>
+</div>
+<script>
+  document.documentElement.classList.add('no-transition');
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    btn.textContent = theme === 'dark' ? 'light mode' : 'dark mode';
+  }
+  setTheme(localStorage.getItem('theme') || 'light');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    html.classList.remove('no-transition');
+  }));
+  btn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
